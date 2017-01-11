@@ -11,8 +11,15 @@ def main():
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
 	
-	label = tkinter.Label(window, text="42", font="\"Plantagenet Cherokee\" 42")
-	label.pack()
+	singleplayer = tkinter.Button(window, text="Un joueur", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
+	multiplayer = tkinter.Button(window, text="Multijoueur", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
+	options = tkinter.Button(window, text="Options", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
+	quit = tkinter.Button(window, text="Quitter", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
+	
+	singleplayer.pack()
+	multiplayer.pack()
+	options.pack()
+	quit.pack()
 	
 	window.mainloop()
 	
