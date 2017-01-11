@@ -1,8 +1,12 @@
-import tkinter
+import tkinter as tk
+import locale
 
 
 def main():
-	window = tkinter.Tk()
+	if locale.getlocale(locale.LC_ALL) == (None, None):
+		locale.setlocale(locale.LC_ALL, locale.getdefaultlocale()[0][:2])
+
+	window = tk.Tk()
 	window.title("Racer Vroomer v42")
 	window.state("zoomed")
 	width = 840
@@ -10,20 +14,21 @@ def main():
 	screenWidth = window.winfo_screenwidth()
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
-	
-	singleplayer = tkinter.Button(window, text="Single Player", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
-	multiplayer = tkinter.Button(window, text="Multiplayer", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
-	options = tkinter.Button(window, text="Options", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
-	quit = tkinter.Button(window, text="(Don't) Quit", font=("Plantagenet Cherokee", 42), anchor="center", width=20)
-	
+
+	import messages as msgs
+
+	singleplayer = tk.Button(window, textvariable = msgs.SINGLE_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20)
+	multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20)
+	options = tk.Button(window, textvariable = msgs.SETTINGS, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, command = lambda: msgs.switchLanguage())
+	quit = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, command = window.quit)
+
 	singleplayer.pack()
 	multiplayer.pack()
 	options.pack()
 	quit.pack()
-	
+
 	window.mainloop()
-	
-	print(42)
+
 
 if __name__ == "__main__":
 	main()
