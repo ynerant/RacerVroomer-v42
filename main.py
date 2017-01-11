@@ -3,7 +3,7 @@ import tkinter
 
 def main():
 	window = tkinter.Tk()
-	window.title("Racer Vrommer v42")
+	window.title("Racer Vroomer v42")
 	window.state("zoomed")
 	width = 840
 	height = 420
