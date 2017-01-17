@@ -17,10 +17,10 @@ def main():
 
 	import messages as msgs
 
-	singleplayer = tk.Button(window, textvariable = msgs.SINGLE_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20)
-	multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20)
-	options = tk.Button(window, textvariable = msgs.SETTINGS, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, command = lambda: msgs.switchLanguage())
-	quit = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, command = window.quit)
+	singleplayer = tk.Button(window, textvariable = msgs.SINGLE_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove")
+	multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10 , relief = "groove")
+	options = tk.Button(window, textvariable = msgs.SETTINGS, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda: msgs.switchLanguage())
+	quit = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = window.quit)
 
 	singleplayer.pack()
 	multiplayer.pack()
