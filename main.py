@@ -8,12 +8,7 @@ import tkinter as tk
 if tk._default_root is None:
 	tk.Tk()
 
-
-# Import messages vars
-import messages as msgs
-# Import some useful content
-import utils
-
+from guis.mainMenu import MainMenu
 
 def main():
 	"""
@@ -21,7 +16,7 @@ def main():
 	"""
 
 	# noinspection PyProtectedMember
-	window = tk._default_root
+	window = tk._default_root #type: tk.Tk
 	window.title("Racer Vroomer v42")
 	# Maximize the window
 	window.state("zoomed")
@@ -32,15 +27,7 @@ def main():
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
 
-	singleplayer = tk.Button(window, textvariable = msgs.SINGLE_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove")
-	multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10 , relief = "groove", command = lambda: utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
-	options = tk.Button(window, textvariable = msgs.SETTINGS, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = msgs.switchLanguage)
-	quitGame = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = window.quit)
-
-	singleplayer.pack()
-	multiplayer.pack()
-	options.pack()
-	quitGame.pack()
+	MainMenu(window)
 
 	window.mainloop()
 
