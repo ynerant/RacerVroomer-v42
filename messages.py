@@ -79,6 +79,8 @@ DISABLE_MUSIC = MSG("Disable music", "Désactiver la musique")
 ENABLE_MUSIC = MSG("Enable music", "Activer la musique")
 DISABLE_SOUNDS = MSG("Disable sounds", "Désactiver les effets sonores")
 ENABLE_SOUNDS = MSG("Enable sounds", "Activer les effets sonores")
+LOCAL = MSG("Local", "Local")
+ONLINE = MSG("Online", "En ligne")
 
 ####################################################################################
 ################################## Boxes messages ##################################
