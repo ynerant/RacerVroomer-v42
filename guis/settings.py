@@ -4,9 +4,8 @@ import tkinter as tk
 # Import messages vars
 import messages as msgs
 # Import some useful content
-import utils
-import guis
-from guis import GUI
+#import utils
+from . import GUI, mainMenu
 
 class Settings(GUI):
 	def __init__(self, window):
@@ -18,13 +17,11 @@ class Settings(GUI):
 		music = tk.Button(window, textvariable = switchMusicMsg, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove")
 		sounds = tk.Button(window, textvariable = switchSoundsMsg, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove")
 		changeLanguage = tk.Button(window, textvariable = msgs.CHANGE_LANGUAGE, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = msgs.switchLanguage)
-		controls = tk.Button(window, textvariable = msgs.CHANGE_CONTROLS, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : Controls(window))
-		back = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : guis.OLD_GUI(window))
+		back = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : mainMenu.MainMenu(window))
 
 		music.pack()
 		sounds.pack()
 		changeLanguage.pack()
-		controls.pack()
 		back.pack()
 
 		def switchMusicState(*kwargs):
@@ -36,6 +33,7 @@ class Settings(GUI):
 				switchMusicMsg.switch(msgs.DISABLE_MUSIC)
 
 		def switchSoundsState(*kwargs):
+			print(window.sounds_enabled)
 			if window.sounds_enabled:
 				window.sounds_enabled = False
 				switchSoundsMsg.switch(msgs.ENABLE_SOUNDS)
@@ -49,15 +47,4 @@ class Settings(GUI):
 		self.children.append(music)
 		self.children.append(sounds)
 		self.children.append(changeLanguage)
-		self.children.append(controls)
-		self.children.append(back)
-
-class Controls(GUI):
-	def __init__(self, window):
-		super().__init__()
-
-		back = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : guis.OLD_GUI(window))
-
-		back.pack()
-
 		self.children.append(back)
