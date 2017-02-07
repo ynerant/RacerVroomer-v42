@@ -13,19 +13,23 @@ def loadSettings():
 	global CONTROLS
 	# noinspection PyProtectedMember
 	window = tk._default_root
-	with gzip.open("settings.gz", "rb") as f:
-		file_content = f.read()
-	jsoned = file_content.decode()
-	obj = json.loads(jsoned)
-	controlsTmp = obj["controls"]
-	CONTROLS = controlsTmp if controlsTmp is not None else CONTROLS
-	music = obj["music"]
-	window.music_enabled = music if type(music) is bool else True
-	sounds = obj["sounds"]
-	window.sounds_enabled = sounds if type(sounds) is bool else True
-	locale = obj["locale"]
-	if locale == "en" or locale == "fr":
-		msgs.LOCALE.set(locale)
+	try:
+		with gzip.open("settings.gz", "rb") as f:
+			file_content = f.read()
+		jsoned = file_content.decode()
+		obj = json.loads(jsoned)
+		controlsTmp = obj["controls"]
+		CONTROLS = controlsTmp if controlsTmp is not None else CONTROLS
+		music = obj["music"]
+		window.music_enabled = music if type(music) is bool else True
+		sounds = obj["sounds"]
+		window.sounds_enabled = sounds if type(sounds) is bool else True
+		locale = obj["locale"]
+		if locale == "en" or locale == "fr":
+			msgs.LOCALE.set(locale)
+	except FileNotFoundError:
+		window.music_enabled = True
+		window.sounds_enabled = True
 
 	saveSettings()
 
