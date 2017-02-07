@@ -9,6 +9,7 @@ if tk._default_root is None:
 	tk.Tk()
 
 from guis.mainMenu import MainMenu
+from guis import settings
 
 def main():
 	"""
@@ -27,8 +28,7 @@ def main():
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
 
-	window.music_enabled = True
-	window.sounds_enabled = True
+	settings.loadSettings()
 
 	MainMenu(window)
 

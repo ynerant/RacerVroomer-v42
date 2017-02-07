@@ -1,6 +1,7 @@
 # coding=utf-8
 from tkinter import StringVar
 import locale
+from guis import settings
 
 if locale.getlocale(locale.LC_ALL) == (None, None):
 	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale()[0][:2])
@@ -8,7 +9,7 @@ if locale.getlocale(locale.LC_ALL) == (None, None):
 LOCALE = StringVar(value = locale.getlocale()[0][:2])
 if LOCALE.get() != "fr" and LOCALE.get() != "en":
 	LOCALE.set("en")
-
+LOCALE.trace_variable("w", lambda *args : settings.saveSettings())
 
 class MSG(StringVar):
 	def __init__(self, english_message : str, french_message : str):

@@ -1,19 +1,49 @@
 #coding: utf-8
 
 import tkinter as tk
+import json, gzip
 # Import messages vars
 import messages as msgs
-# Import some useful content
-import utils
 import guis
 from guis import GUI
+
+CONTROLS = dict(forward = 'Z', left = 'Q', backward = 'S', right = 'D', brake = 'SHIFT_L')
+
+def loadSettings():
+	global CONTROLS
+	# noinspection PyProtectedMember
+	window = tk._default_root
+	with gzip.open("settings.gz", "rb") as f:
+		file_content = f.read()
+	jsoned = file_content.decode()
+	obj = json.loads(jsoned)
+	controlsTmp = obj["controls"]
+	CONTROLS = controlsTmp if controlsTmp is not None else CONTROLS
+	music = obj["music"]
+	window.music_enabled = music if type(music) is bool else True
+	sounds = obj["sounds"]
+	window.sounds_enabled = sounds if type(sounds) is bool else True
+	locale = obj["locale"]
+	if locale == "en" or locale == "fr":
+		msgs.LOCALE.set(locale)
+
+	saveSettings()
+
+def saveSettings():
+	# noinspection PyProtectedMember
+	window = tk._default_root
+	settings = dict(music = window.music_enabled, sounds = window.sounds_enabled, locale = msgs.LOCALE.get(), controls = CONTROLS)
+	jsoned = json.dumps(settings, sort_keys = True, indent = 4)
+
+	with gzip.open("settings.gz", "wb") as f:
+		f.write(jsoned.encode("UTF-8"))
 
 class Settings(GUI):
 	def __init__(self, window):
 		GUI.__init__(self)
 
-		switchMusicMsg = msgs.DISABLE_MUSIC.clone()
-		switchSoundsMsg = msgs.DISABLE_SOUNDS.clone()
+		switchMusicMsg = (msgs.DISABLE_MUSIC if window.music_enabled else msgs.ENABLE_MUSIC).clone()
+		switchSoundsMsg = (msgs.DISABLE_SOUNDS if window.sounds_enabled else msgs.ENABLE_SOUNDS).clone()
 
 		music = tk.Button(window, textvariable = switchMusicMsg, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 25, borderwidth = 10, relief = "groove")
 		sounds = tk.Button(window, textvariable = switchSoundsMsg, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 25, borderwidth = 10, relief = "groove")
@@ -27,21 +57,21 @@ class Settings(GUI):
 		controls.pack()
 		back.pack()
 
-		def switchMusicState(*kwargs):
+		def switchMusicState(*args):
 			if window.music_enabled:
-				window.music_enabled = False
 				switchMusicMsg.switch(msgs.ENABLE_MUSIC)
 			else:
-				window.music_enabled = True
 				switchMusicMsg.switch(msgs.DISABLE_MUSIC)
+			window.music_enabled ^= True
+			saveSettings()
 
-		def switchSoundsState(*kwargs):
+		def switchSoundsState(*args):
 			if window.sounds_enabled:
-				window.sounds_enabled = False
 				switchSoundsMsg.switch(msgs.ENABLE_SOUNDS)
 			else:
-				window.sounds_enabled = True
 				switchSoundsMsg.switch(msgs.DISABLE_SOUNDS)
+			window.sounds_enabled ^= True
+			saveSettings()
 
 		music.bind("<Button-1>", switchMusicState)
 		sounds.bind("<Button-1>", switchSoundsState)
@@ -56,7 +86,6 @@ class Controls(GUI):
 	def __init__(self, window):
 		super().__init__()
 
-		CONTROLS = utils.CONTROLS
 		forwardLabel = tk.Label(window, textvariable = msgs.FORWARD, font = ("Plantagenet Cherokee", 21))
 		forwardText = tk.StringVar(window, CONTROLS["forward"].replace("_", " "))
 		forward = tk.Button(window, textvariable = forwardText, font = ("Plantagenet Cherokee", 21), width = 10)
@@ -100,8 +129,9 @@ class Controls(GUI):
 				if event.keysym.upper() in CONTROLS.values():
 					return
 				buttonText.set(event.keysym.upper().replace("_", " "))
-				utils.CONTROLS[index] = event.keysym.upper()
+				CONTROLS[index] = event.keysym.upper()
 				popup.destroy()
+				saveSettings()
 			popup.bind("<KeyPress>", catch_key_event)
 			popup.focus_force()
 			popup.wm_attributes("-topmost", 1)
