@@ -5,6 +5,7 @@ import json, gzip
 # Import messages vars
 import messages as msgs
 import guis
+import utils
 from guis import GUI
 
 CONTROLS = dict(forward = 'Z', left = 'Q', backward = 'S', right = 'D', brake = 'SHIFT_L')
@@ -28,6 +29,10 @@ def loadSettings():
 		if locale == "en" or locale == "fr":
 			msgs.LOCALE.set(locale)
 	except FileNotFoundError:
+		window.music_enabled = True
+		window.sounds_enabled = True
+	except IOError:
+		utils.showMessageDialog(msgs.MSG("Error occurred", ""), msgs.MSG("An error occurred while loading settings. The file may be corrupted, all yur settings are resetted.", ""))
 		window.music_enabled = True
 		window.sounds_enabled = True
 
@@ -124,6 +129,7 @@ class Controls(GUI):
 			popup = tk.Toplevel(window)
 			label = tk.Label(popup, textvariable = msgs.WHAT_KEY_FOR.format(label.get().lower()), font = ("Plantagenet Cherokee", 30))
 			label.grid(row = 0, column = 0, padx = 10, pady = 10)
+			sound_started = tk.BooleanVar(False)
 			def catch_key_event(event):
 				print(event)
 				key = event.keycode
@@ -131,6 +137,15 @@ class Controls(GUI):
 					popup.destroy()
 					return
 				if event.keysym.upper() in CONTROLS.values():
+					import sys
+					if "win" in sys.platform.lower():
+						import winsound, threading
+						if not sound_started.get():
+							def start_sound():
+								sound_started.set(True)
+								winsound.PlaySound("*", winsound.SND_ALIAS)
+								sound_started.set(False)
+							threading.Thread(target = start_sound).start()
 					return
 				buttonText.set(event.keysym.upper().replace("_", " "))
 				CONTROLS[index] = event.keysym.upper()
