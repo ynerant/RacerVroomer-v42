@@ -68,6 +68,8 @@ def switchLanguage():
 ####################################################################################
 
 SINGLE_PLAYER = MSG("Singleplayer", "Un joueur")
+MAP_CHOICE = MSG("Choose map", "Choisir la carte")
+CAR_CHOICE = MSG("Choose car", "Choisir la voiture")
 MULTI_PLAYER = MSG("Multiplayer", "Multijoueur")
 SETTINGS = MSG("Settings", "Options")
 QUIT = MSG("Don't quit :(", "Ne quittez pas :(")
@@ -77,18 +79,6 @@ DISABLE_MUSIC = MSG("Disable music", "Désactiver la musique")
 ENABLE_MUSIC = MSG("Enable music", "Activer la musique")
 DISABLE_SOUNDS = MSG("Disable sounds", "Désactiver les effets sonores")
 ENABLE_SOUNDS = MSG("Enable sounds", "Activer les effets sonores")
-CHANGE_CONTROLS = MSG("Controls", "Contrôles")
-
-
-####################################################################################
-################################## Controls names ##################################
-####################################################################################
-
-FORWARD = MSG("Forward", "Avancer")
-TURN_LEFT = MSG("Turn left", "Tourner à gauche")
-BACKWARD = MSG("Backward", "Reculer")
-TURN_RIGHT = MSG("Turn right", "Tourner à droite")
-BRAKE = MSG("Brake", "Freiner")
 
 ####################################################################################
 ################################## Boxes messages ##################################
@@ -98,7 +88,7 @@ SOON = MSG("Soon!", "Bientôt !")
 FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette fonctionnalité sera (probablement) accessible plus tard !")
 
 ####################################################################################
-#################################### Cars names ####################################
+################################## Cars names ##################################
 ####################################################################################
 
 RED_CAR = MSG("Red Speedo", "La Fulgurante Rouge")
