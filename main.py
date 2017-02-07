@@ -28,6 +28,15 @@ def main():
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
 
+	def catch_key_event(event):
+		if event.keysym == "F11":
+			if window.attributes("-fullscreen"):
+				window.attributes("-fullscreen", False)
+			else:
+				window.attributes("-fullscreen", True)
+			settings.saveSettings()
+	window.bind("<KeyPress>", catch_key_event)
+
 	settings.loadSettings()
 
 	MainMenu(window)

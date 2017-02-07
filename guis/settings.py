@@ -18,13 +18,16 @@ def loadSettings():
 		with gzip.open("settings.gz", "rb") as f:
 			file_content = f.read()
 		jsoned = file_content.decode()
-		obj = json.loads(jsoned)
-		controlsTmp = obj["controls"]
-		CONTROLS = controlsTmp if controlsTmp is not None else CONTROLS
-		music = obj["music"]
-		window.music_enabled = music if type(music) is bool else True
-		sounds = obj["sounds"]
-		window.sounds_enabled = sounds if type(sounds) is bool else True
+		obj = json.loads(jsoned) #type: dict
+		obj.setdefault("controls", CONTROLS)
+		obj.setdefault("music", True)
+		obj.setdefault("sounds", True)
+		obj.setdefault("fullscreen", False)
+		obj.setdefault("locale", msgs.LOCALE.get())
+		CONTROLS = obj["controls"]
+		window.music_enabled = bool(obj["music"])
+		window.sounds_enabled = bool(obj["sounds"])
+		window.attributes("-fullscreen", bool(obj["fullscreen"]))
 		locale = obj["locale"]
 		if locale == "en" or locale == "fr":
 			msgs.LOCALE.set(locale)
@@ -41,7 +44,7 @@ def loadSettings():
 def saveSettings():
 	# noinspection PyProtectedMember
 	window = tk._default_root
-	settings = dict(music = window.music_enabled, sounds = window.sounds_enabled, locale = msgs.LOCALE.get(), controls = CONTROLS)
+	settings = dict(music = window.music_enabled, sounds = window.sounds_enabled, locale = msgs.LOCALE.get(), fullscreen = bool(window.attributes("-fullscreen")), controls = CONTROLS)
 	jsoned = json.dumps(settings, sort_keys = True, indent = 4)
 
 	with gzip.open("settings.gz", "wb") as f:
