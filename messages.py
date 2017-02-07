@@ -102,6 +102,8 @@ TURN_LEFT = MSG("Turn left", "Tourner à gauche")
 BACKWARD = MSG("Backward", "Reculer")
 TURN_RIGHT = MSG("Turn right", "Tourner à droite")
 BRAKE = MSG("Brake", "Freiner")
+LOCAL = MSG("Local", "Local")
+ONLINE = MSG("Online", "En ligne")
 
 ####################################################################################
 ################################## Boxes messages ##################################
