@@ -61,3 +61,9 @@ QUIT = MSG("Don't quit :(", "Ne quittez pas :(")
 ####################################################################################
 SOON = MSG("Soon!", "Bientôt !")
 FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette fonctionnalité sera (probablement) accessible plus tard !")
+
+####################################################################################
+################################## Cars names ##################################
+####################################################################################
+
+RED_CAR = MSG("Red Speedo", "La Fulgurante Rouge")
