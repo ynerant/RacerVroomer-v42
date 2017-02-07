@@ -42,6 +42,16 @@ class MSG(StringVar):
 		else:
 			self.set(self.en)
 
+	def format(self, *args):
+		obj = self.clone()
+		obj.en = obj.en.format(*list(args))
+		obj.fr = obj.fr.format(*list(args))
+		if isFrench():
+			obj.set(obj.fr)
+		else:
+			obj.set(obj.en)
+		return obj
+
 
 def isEnglish():
 	return LOCALE.get() == "en"
@@ -79,6 +89,19 @@ DISABLE_MUSIC = MSG("Disable music", "Désactiver la musique")
 ENABLE_MUSIC = MSG("Enable music", "Activer la musique")
 DISABLE_SOUNDS = MSG("Disable sounds", "Désactiver les effets sonores")
 ENABLE_SOUNDS = MSG("Enable sounds", "Activer les effets sonores")
+CHANGE_CONTROLS = MSG("Controls", "Contrôles")
+WHAT_KEY_FOR = MSG("What key to {}?", "Quelle touche pour {} ?")
+
+
+####################################################################################
+################################## Controls names ##################################
+####################################################################################
+
+FORWARD = MSG("Forward", "Avancer")
+TURN_LEFT = MSG("Turn left", "Tourner à gauche")
+BACKWARD = MSG("Backward", "Reculer")
+TURN_RIGHT = MSG("Turn right", "Tourner à droite")
+BRAKE = MSG("Brake", "Freiner")
 
 ####################################################################################
 ################################## Boxes messages ##################################
