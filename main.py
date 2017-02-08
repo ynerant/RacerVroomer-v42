@@ -27,6 +27,9 @@ def main():
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
 
+	window.music_enabled = True
+	window.sounds_enabled = True
+
 	MainMenu(window)
 
 	window.mainloop()

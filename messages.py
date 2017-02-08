@@ -11,20 +11,36 @@ if LOCALE.get() != "fr" and LOCALE.get() != "en":
 
 
 class MSG(StringVar):
-	def __init__(self, english_message, french_message):
+	def __init__(self, english_message : str, french_message : str):
 		super().__init__()
 		self.en = english_message
 		self.fr = french_message
 
+		if len(self.fr) == 0:
+			self.fr = self.en
+		if len(self.en) == 0:
+			self.en = self.fr
+
 		# noinspection PyUnusedLocal
 		def callback(*kwargs):
-			if LOCALE.get() == "fr":
+			if isFrench():
 				self.set(self.fr)
 			else:
 				self.set(self.en)
 
 		LOCALE.trace_variable("w", callback)
 		callback()
+
+	def clone(self):
+		return MSG(self.en, self.fr)
+
+	def switch(self, msg):
+		self.en = msg.en
+		self.fr = msg.fr
+		if isFrench():
+			self.set(self.fr)
+		else:
+			self.set(self.en)
 
 
 def isEnglish():
@@ -55,10 +71,17 @@ SINGLE_PLAYER = MSG("Singleplayer", "Un joueur")
 MULTI_PLAYER = MSG("Multiplayer", "Multijoueur")
 SETTINGS = MSG("Settings", "Options")
 QUIT = MSG("Don't quit :(", "Ne quittez pas :(")
+BACK = MSG("Back", "Retour")
+CHANGE_LANGUAGE = MSG("Changer en français", "Change to english")
+DISABLE_MUSIC = MSG("Disable music", "Désactiver la musique")
+ENABLE_MUSIC = MSG("Enable music", "Activer la musique")
+DISABLE_SOUNDS = MSG("Disable sounds", "Désactiver les effets sonores")
+ENABLE_SOUNDS = MSG("Enable sounds", "Activer les effets sonores")
 
 ####################################################################################
 ################################## Boxes messages ##################################
 ####################################################################################
+
 SOON = MSG("Soon!", "Bientôt !")
 FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette fonctionnalité sera (probablement) accessible plus tard !")
 
