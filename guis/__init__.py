@@ -1,12 +1,14 @@
-_CURRENT_GUI = None
+CURRENT_GUI = None
+OLD_GUI = None
 
 class GUI:
 	def __init__(self):
-		global _CURRENT_GUI
-		if _CURRENT_GUI is not None:
-			_CURRENT_GUI.destroy()
+		global CURRENT_GUI, OLD_GUI
+		if CURRENT_GUI is not None:
+			CURRENT_GUI.destroy()
 		self.children = []
-		_CURRENT_GUI = self
+		OLD_GUI = CURRENT_GUI.__class__
+		CURRENT_GUI = self
 
 	def destroy(self):
 		for child in self.children:
