@@ -81,6 +81,7 @@ def switchLanguage():
 SINGLE_PLAYER = MSG("Singleplayer", "Un joueur")
 MAP_CHOICE = MSG("Choose map", "Choisir la carte")
 CAR_CHOICE = MSG("Choose car", "Choisir la voiture")
+START = MSG("Start!", "Démarrer !")
 MULTI_PLAYER = MSG("Multiplayer", "Multijoueur")
 SETTINGS = MSG("Settings", "Paramètres")
 QUIT = MSG("Don't quit :(", "Ne quittez pas :(")
@@ -92,6 +93,9 @@ DISABLE_SOUNDS = MSG("Disable sounds", "Désactiver les effets sonores")
 ENABLE_SOUNDS = MSG("Enable sounds", "Activer les effets sonores")
 CHANGE_CONTROLS = MSG("Controls", "Contrôles")
 WHAT_KEY_FOR = MSG("What key to {}?", "Quelle touche pour {} ?")
+SPEED = MSG("Speed : {}", "Vitesse : {}")
+SIZE = MSG("Size : {}x{}", "Taille : {}x{}")
+CHOOSE = MSG("Choose", "Choisir")
 
 
 ####################################################################################
@@ -118,3 +122,5 @@ FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette 
 ####################################################################################
 
 RED_CAR = MSG("Red Speedo", "La Fulgurante Rouge")
+BLUE_CAR = MSG("Blue car", "La voiture bleue")
+GREEN_CAR = MSG("Green car", "La voiture verte")

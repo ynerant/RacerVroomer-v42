@@ -28,6 +28,7 @@ def main():
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
 
+	# noinspection PyUnusedLocal
 	def catch_key_event(event):
 		if window.attributes("-fullscreen"):
 			window.attributes("-fullscreen", False)

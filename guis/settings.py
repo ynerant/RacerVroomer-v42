@@ -50,6 +50,8 @@ def saveSettings():
 	with gzip.open("settings.gz", "wb") as f:
 		f.write(jsoned.encode("UTF-8"))
 
+
+# noinspection PyUnusedLocal
 class Settings(GUI):
 	def __init__(self, window):
 		GUI.__init__(self)
@@ -132,6 +134,11 @@ class Controls(GUI):
 			popup = tk.Toplevel(window)
 			label = tk.Label(popup, textvariable = msgs.WHAT_KEY_FOR.format(label.get().lower()), font = ("Plantagenet Cherokee", 30))
 			label.grid(row = 0, column = 0, padx = 10, pady = 10)
+			width = label.winfo_reqwidth() + 20
+			height = label.winfo_height() + 80
+			screenWidth = popup.winfo_screenwidth()
+			screenHeight = popup.winfo_screenheight()
+			popup.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2) - 40))
 			sound_started = tk.BooleanVar(False)
 			def catch_key_event(event):
 				print(event)

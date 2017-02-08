@@ -1,3 +1,5 @@
+#coding : utf-8
+
 CURRENT_GUI = None
 OLD_GUIS = []
 

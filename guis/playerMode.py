@@ -3,36 +3,44 @@
 import tkinter as tk
 import messages as msgs
 import utils
-from . import GUI, mainMenu
+from guis import GUI, back
+from guis.gameBuilder import CarChooser, MapChooser, GameBuilder
 
-class Singleplayer(GUI):
+class SinglePlayer(GUI):
 	def __init__(self, window):
 		GUI.__init__(self)
 
-		map = tk.Button(window, textvariable = msgs.MAP_CHOICE, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove")
-		car = tk.Button(window, textvariable = msgs.CAR_CHOICE, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove")
-		back = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : mainMenu.MainMenu(window))
+		builder = GameBuilder.CURRENT_GAME_BUILDER
+		if builder is None:
+			builder = GameBuilder.CURRENT_GAME_BUILDER = GameBuilder(GameBuilder.SINGLE_PLAYER_MODE)
+
+		car = tk.Button(window, textvariable = msgs.CAR_CHOICE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : CarChooser(window, builder))
+		chooseMap = tk.Button(window, textvariable = msgs.MAP_CHOICE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : MapChooser(window, builder))
+		start = tk.Button(window, textvariable = msgs.START, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : print(42))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 
 		car.pack()
-		map.pack()
-		back.pack()
+		chooseMap.pack()
+		start.pack()
+		backBtn.pack()
 
-		self.children.append(map)
 		self.children.append(car)
-		self.children.append(back)
+		self.children.append(chooseMap)
+		self.children.append(start)
+		self.children.append(backBtn)
 
-class Multiplayer(GUI):
+class MultiPlayer(GUI):
 	def __init__(self, window):
 		GUI.__init__(self)
 
 		local = tk.Button(window, textvariable = msgs.LOCAL, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
 		online = tk.Button(window, textvariable = msgs.ONLINE, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
-		back = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : mainMenu.MainMenu(window))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 
 		local.pack()
 		online.pack()
-		back.pack()
+		backBtn.pack()
 
 		self.children.append(local)
 		self.children.append(online)
-		self.children.append(back)
+		self.children.append(backBtn)
