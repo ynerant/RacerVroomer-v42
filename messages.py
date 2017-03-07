@@ -118,9 +118,16 @@ SOON = MSG("Soon!", "Bientôt !")
 FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette fonctionnalité sera (probablement) accessible plus tard !")
 
 ####################################################################################
-################################## Cars names ##################################
+################################## Cars names ######################################
 ####################################################################################
 
 RED_CAR = MSG("Red Speedo", "La Fulgurante Rouge")
 BLUE_CAR = MSG("Blue car", "La voiture bleue")
 GREEN_CAR = MSG("Green car", "La voiture verte")
+
+
+####################################################################################
+################################## Maps names ######################################
+####################################################################################
+
+BABY =MSG("Baby loop", "Circuit Baby")
