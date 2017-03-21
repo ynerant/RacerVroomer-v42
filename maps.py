@@ -47,3 +47,4 @@ class Wall :
 		return "{Wall x=[" + str(self.x_start) + ", " + str(self.x_end) + "], y=[" + str(self.y_start) + ", " + str(self.y_end) + "]}"
 
 BABY = Map(msgs.BABY, "baby.map")
+filter
