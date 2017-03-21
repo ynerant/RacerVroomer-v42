@@ -33,7 +33,7 @@ class Map :
 		MAPS.append(self)
 
 	def __str__(self):
-		return "{Map name=\"" + self.name.get() + "\", size=" + str(self.width) + "x" + str(self.height) + ", filename=\"" + self.fileName + "\", img_file=\"" + self.img_file\
+		return "{Map name=\"" + self.name.get() + "\", size=" + str(self.width) + "x" + str(self.height) + ", filename=\"" + self.fileName + "\", img_file=\"" + self.img_file \
 			   + "\", start=" + str(self.start) + ", walls=" + str(self.walls) + "}"
 
 class Wall :
