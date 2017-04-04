@@ -2,8 +2,9 @@
 
 import tkinter as tk
 import messages as msgs
-from guis import GUI, back
+from guis import GUI, back, game
 import cars, maps
+from PIL import Image
 
 class GameBuilder:
 	CURRENT_GAME_BUILDER = None
@@ -21,6 +22,9 @@ class GameBuilder:
 		self.car = None
 		self.map = None
 		self.mode = mode
+
+	def start(self, window):
+		game.Game(window, self)
 
 class CarChooser(GUI):
 	def __init__(self, window : tk.Tk, gameBuilder : GameBuilder):
@@ -74,6 +78,9 @@ class MapChooser(GUI):
 
 		for i in range(len(maps.MAPS)):
 			map = maps.MAPS[i]
+			image = Image.open("images/thumbnails/" + map.thumbnail)
+			image = image.resize((100, 100), Image.ANTIALIAS)
+			image.save("images/thumbnails/" + map.thumbnail, "png")
 			thumbnail = tk.PhotoImage(file = "images/thumbnails/" + map.thumbnail)
 			thumbnailLabel = tk.Label(window, image = thumbnail)
 			thumbnailLabel.image = thumbnail

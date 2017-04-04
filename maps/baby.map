@@ -1,8 +1,8 @@
 {
 	"img_file": "baby.png",
 	"thumbnail": "baby_thumbnail.png",
-	"width": 42,
-	"height": 42,
+	"width": 1920,
+	"height": 1080,
 	"start": [4, 5, 4, 5],
 	"walls": []
 }

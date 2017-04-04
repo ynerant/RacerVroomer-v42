@@ -102,11 +102,10 @@ CHOOSE = MSG("Choose", "Choisir")
 ################################## Controls names ##################################
 ####################################################################################
 
-FORWARD = MSG("Forward", "Avancer")
+FORWARD = MSG("Accelerate", "Accélérer")
 TURN_LEFT = MSG("Turn left", "Tourner à gauche")
-BACKWARD = MSG("Backward", "Reculer")
+BACKWARD = MSG("Brake", "Freiner")
 TURN_RIGHT = MSG("Turn right", "Tourner à droite")
-BRAKE = MSG("Brake", "Freiner")
 LOCAL = MSG("Local", "Local")
 ONLINE = MSG("Online", "En ligne")
 
@@ -130,4 +129,5 @@ GREEN_CAR = MSG("Green car", "La voiture verte")
 ################################## Maps names ######################################
 ####################################################################################
 
-BABY =MSG("Baby loop", "Circuit Baby")
+BABY = MSG("Baby loop", "Circuit Baby")
+CIRCUIT_8 = MSG("8-Circuit", "Circuit en 8")

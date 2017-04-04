@@ -8,10 +8,7 @@ import guis
 import utils
 from guis import GUI
 
-CONTROLS = dict(forward = 'Z', left = 'Q', backward = 'S', right = 'D', brake = 'SHIFT_L')
-
 def loadSettings():
-	global CONTROLS
 	# noinspection PyProtectedMember
 	window = tk._default_root
 	try:
@@ -19,12 +16,12 @@ def loadSettings():
 			file_content = f.read()
 		jsoned = file_content.decode()
 		obj = json.loads(jsoned) #type: dict
-		obj.setdefault("controls", CONTROLS)
+		obj.setdefault("controls", utils.CONTROLS)
 		obj.setdefault("music", True)
 		obj.setdefault("sounds", True)
 		obj.setdefault("fullscreen", False)
 		obj.setdefault("locale", msgs.LOCALE.get())
-		CONTROLS = obj["controls"]
+		utils.CONTROLS = obj["controls"]
 		window.music_enabled = bool(obj["music"])
 		window.sounds_enabled = bool(obj["sounds"])
 		window.attributes("-fullscreen", bool(obj["fullscreen"]))
@@ -44,7 +41,7 @@ def loadSettings():
 def saveSettings():
 	# noinspection PyProtectedMember
 	window = tk._default_root
-	settings = dict(music = window.music_enabled, sounds = window.sounds_enabled, locale = msgs.LOCALE.get(), fullscreen = bool(window.attributes("-fullscreen")), controls = CONTROLS)
+	settings = dict(music = window.music_enabled, sounds = window.sounds_enabled, locale = msgs.LOCALE.get(), fullscreen = bool(window.attributes("-fullscreen")), controls = utils.CONTROLS)
 	jsoned = json.dumps(settings, sort_keys = True, indent = 4)
 
 	with gzip.open("settings.gz", "wb") as f:
@@ -101,20 +98,17 @@ class Controls(GUI):
 		super().__init__()
 
 		forwardLabel = tk.Label(window, textvariable = msgs.FORWARD, font = ("Plantagenet Cherokee", 21))
-		forwardText = tk.StringVar(window, CONTROLS["forward"].replace("_", " "))
+		forwardText = tk.StringVar(window, utils.CONTROLS["forward"].replace("_", " "))
 		forward = tk.Button(window, textvariable = forwardText, font = ("Plantagenet Cherokee", 21), width = 10)
 		leftLabel = tk.Label(window, textvariable = msgs.TURN_LEFT, font = ("Plantagenet Cherokee", 21))
-		leftText = tk.StringVar(window, CONTROLS["left"].replace("_", " "))
+		leftText = tk.StringVar(window, utils.CONTROLS["left"].replace("_", " "))
 		left = tk.Button(window, textvariable = leftText, font = ("Plantagenet Cherokee", 21), width = 10)
 		backwardLabel = tk.Label(window, textvariable = msgs.BACKWARD, font = ("Plantagenet Cherokee", 21))
-		backwardText = tk.StringVar(window, CONTROLS["backward"].replace("_", " "))
+		backwardText = tk.StringVar(window, utils.CONTROLS["backward"].replace("_", " "))
 		backward = tk.Button(window, textvariable = backwardText, font = ("Plantagenet Cherokee", 21), width = 10)
 		rightLabel = tk.Label(window, textvariable = msgs.TURN_RIGHT, font = ("Plantagenet Cherokee", 21))
-		rightText = tk.StringVar(window, CONTROLS["right"].replace("_", " "))
+		rightText = tk.StringVar(window, utils.CONTROLS["right"].replace("_", " "))
 		right = tk.Button(window, textvariable = rightText, font = ("Plantagenet Cherokee", 21), width = 10)
-		brakeLabel = tk.Label(window, textvariable = msgs.BRAKE, font = ("Plantagenet Cherokee", 21))
-		brakeText = tk.StringVar(window, CONTROLS["brake"].replace("_", " "))
-		brake = tk.Button(window, textvariable = brakeText, font = ("Plantagenet Cherokee", 21), width = 10)
 
 		back = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 21), anchor = "center", width = 50, borderwidth = 10, relief = "groove", command = lambda : guis.back(window))
 
@@ -126,9 +120,7 @@ class Controls(GUI):
 		backward.grid(row = 2, column = 1)
 		rightLabel.grid(row = 3, column = 0)
 		right.grid(row = 3, column = 1)
-		brakeLabel.grid(row = 4, column = 0)
-		brake.grid(row = 4, column = 1)
-		back.grid(row = 5, column = 0, columnspan = 2, pady = 50)
+		back.grid(row = 4, column = 0, columnspan = 2, pady = 50)
 
 		def requestNewKey(index, buttonText, label):
 			popup = tk.Toplevel(window)
@@ -146,7 +138,7 @@ class Controls(GUI):
 				if key == 27:
 					popup.destroy()
 					return
-				if event.keysym.upper() in CONTROLS.values():
+				if event.keysym.upper() in utils.CONTROLS.values():
 					import sys
 					if "win" in sys.platform.lower():
 						import winsound, threading
@@ -158,7 +150,7 @@ class Controls(GUI):
 							threading.Thread(target = start_sound).start()
 					return
 				buttonText.set(event.keysym.upper().replace("_", " "))
-				CONTROLS[index] = event.keysym.upper()
+				utils.CONTROLS[index] = event.keysym.upper()
 				popup.destroy()
 				saveSettings()
 			popup.bind("<KeyPress>", catch_key_event)
@@ -170,7 +162,6 @@ class Controls(GUI):
 		left.bind("<ButtonRelease-1>", lambda event : requestNewKey("left", leftText, msgs.TURN_LEFT))
 		backward.bind("<ButtonRelease-1>", lambda event : requestNewKey("backward", backwardText, msgs.BACKWARD))
 		right.bind("<ButtonRelease-1>", lambda event : requestNewKey("right", rightText, msgs.TURN_RIGHT))
-		brake.bind("<ButtonRelease-1>", lambda event : requestNewKey("brake", brakeText, msgs.BRAKE))
 
 		window.columnconfigure(0, weight = 3)
 		window.columnconfigure(1, weight = 2)
@@ -183,6 +174,4 @@ class Controls(GUI):
 		self.children.append(backward)
 		self.children.append(rightLabel)
 		self.children.append(right)
-		self.children.append(brakeLabel)
-		self.children.append(brake)
 		self.children.append(back)
