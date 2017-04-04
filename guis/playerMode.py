@@ -14,10 +14,10 @@ class SinglePlayer(GUI):
 		if builder is None:
 			builder = GameBuilder.CURRENT_GAME_BUILDER = GameBuilder(GameBuilder.SINGLE_PLAYER_MODE)
 
-		car = tk.Button(window, textvariable = msgs.CAR_CHOICE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : CarChooser(window, builder))
-		chooseMap = tk.Button(window, textvariable = msgs.MAP_CHOICE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : MapChooser(window, builder))
-		start = tk.Button(window, textvariable = msgs.START, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", state = tk.DISABLED if builder.car is None or builder.map is None else tk.NORMAL, command = lambda : builder.start(window))
-		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+		car = tk.Button(window, textvariable = msgs.CAR_CHOICE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = lambda : CarChooser(window, builder))
+		chooseMap = tk.Button(window, textvariable = msgs.MAP_CHOICE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = lambda : MapChooser(window, builder))
+		start = tk.Button(window, textvariable = msgs.START, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", state = tk.DISABLED if builder.car is None or builder.map is None else tk.NORMAL, command = lambda : builder.start(window))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = lambda : back(window))
 
 		car.pack()
 		chooseMap.pack()
@@ -33,9 +33,9 @@ class MultiPlayer(GUI):
 	def __init__(self, window):
 		GUI.__init__(self)
 
-		local = tk.Button(window, textvariable = msgs.LOCAL, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
-		online = tk.Button(window, textvariable = msgs.ONLINE, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
-		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+		local = tk.Button(window, textvariable = msgs.LOCAL, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
+		online = tk.Button(window, textvariable = msgs.ONLINE, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 42), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = lambda : back(window))
 
 		local.pack()
 		online.pack()
