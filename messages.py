@@ -131,3 +131,4 @@ GREEN_CAR = MSG("Green car", "La voiture verte")
 
 BABY = MSG("Baby loop", "Circuit Baby")
 CIRCUIT_8 = MSG("8-Circuit", "Circuit en 8")
+TEST_LOOP = MSG("Test Loop", "Circuit de test")

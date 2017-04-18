@@ -44,8 +44,6 @@ class Car:
 		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
 		self.img_img = ImageTk.PhotoImage(img_temp)
 		self.img = self.canvas.create_image(0, 0, image = self.img_img)
-		self.canvas.coords(self.img, window.winfo_screenwidth() / self.game.map.width * (self.x - self.car.width / 2),
-						   window.winfo_screenheight() / self.game.map.height * (self.y - self.car.height / 2))
 
 		self.speed = 0.0
 		self.angle = 0.0
@@ -108,9 +106,36 @@ class CarThread(Thread):
 	def run(self):
 		car = self.car
 		while True:
-			car.x += car.speed * car.vector[0] / 60.0
-			car.y += car.speed * car.vector[1] / 60.0
+			newX = car.x + car.speed * car.vector[0] / 60.0
+			newY = car.y + car.speed * car.vector[1] / 60.0
+
+			collision = False
+			for wall in car.game.map.walls:
+				dot_product = (wall.x_end - wall.x_start) * (newX - wall.x_start) + (wall.y_end - wall.y_start) * (newY - wall.y_start)
+				line = (wall.x_end - wall.x_start, wall.y_end - wall.y_start)
+				line_length = math.sqrt(line[0] ** 2 + line[1] ** 2)
+				xH, yH = dot_product / (line_length ** 2) * line[0] + wall.x_start, dot_product / (line_length ** 2) * line[1] + wall.y_start
+
+				if xH < min(wall.x_start, wall.x_end) or xH > max(wall.x_start, wall.x_end) or yH < min(wall.y_start, wall.y_end) or yH > max(wall.y_start, wall.y_end):
+					continue
+
+				diagonal = math.sqrt(car.car.width ** 2 + car.car.height ** 2) / 2
+				if math.sqrt((xH - newX) ** 2 + (yH - newY) ** 2) < diagonal + 0.1:
+					collision = True
+					break
+
+			if collision:
+				car.x = car.x - car.speed * car.vector[0] / 10.0
+				car.y = car.y - car.speed * car.vector[1] / 10.0
+				if car.speed > 0:
+					car.speed = -car.speed
+				else:
+					car.speed = 0.0
+				continue
+
+			car.x = newX
+			car.y = newY
 			car.speed *= 0.98
 			car.canvas.coords(car.img, car.window.winfo_screenwidth() / car.game.map.width * (car.x - car.car.width / 2),
-							   car.window.winfo_screenheight() / car.game.map.height * car.y)
+							  car.window.winfo_screenheight() / car.game.map.height * car.y)
 			time.sleep(1.0 / 60.0)

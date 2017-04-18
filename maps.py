@@ -48,3 +48,4 @@ class Wall :
 
 BABY = Map(msgs.BABY, "baby.map")
 CIRCUIT_8 = Map(msgs.CIRCUIT_8, "8_circuit.map")
+TEST_LOOP = Map(msgs.TEST_LOOP, "test_loop.map")
