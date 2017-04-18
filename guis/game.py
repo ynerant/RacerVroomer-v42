@@ -16,7 +16,10 @@ class Game(GUI):
 
 		self.canvas = tk.Canvas(window, width = window.winfo_screenwidth(), height = window.winfo_screenheight(), bg = "green")
 
-		self.background_img = ImageTk.PhotoImage(file = "images/maps/" + self.map.img_file)
+		img_temp = Image.open("images/maps/" + self.map.img_file)
+		img_temp = img_temp.convert("RGBA")
+		img_temp = img_temp.resize((window.winfo_screenwidth(), window.winfo_screenheight()), Image.ANTIALIAS)
+		self.background_img = ImageTk.PhotoImage(img_temp)
 		self.background = self.canvas.create_image(window.winfo_screenwidth(), window.winfo_screenheight(), image = self.background_img)
 		self.canvas.focus_set()
 		self.canvas.pack()
@@ -33,15 +36,16 @@ class Car:
 		self.window = window
 
 		start_line = game.map.start
-		self.x = int((start_line.x_end + start_line.x_start) / 2) - 60
-		self.y = int((start_line.y_end + start_line.y_start) / 2) - 120
+		self.x = int((start_line.x_end + start_line.x_start) / 2)
+		self.y = int((start_line.y_end + start_line.y_start) / 2)
 		self.canvas = game.canvas
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
 		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
 		self.img_img = ImageTk.PhotoImage(img_temp)
 		self.img = self.canvas.create_image(0, 0, image = self.img_img)
-		self.canvas.coords(self.img, self.x - self.car.width / 2, self.y - self.car.height / 2)
+		self.canvas.coords(self.img, window.winfo_screenwidth() / self.game.map.width * (self.x - self.car.width / 2),
+						   window.winfo_screenheight() / self.game.map.height * (self.y - self.car.height / 2))
 
 		self.speed = 0.0
 		self.angle = 0.0
@@ -58,6 +62,7 @@ class Car:
 	def catch_key_event(self, event):
 		from utils import CONTROLS
 		key = event.keysym.upper()
+		print(key)
 		if key == CONTROLS["forward"]:
 			self.forward()
 		elif key == CONTROLS["backward"]:
@@ -106,5 +111,6 @@ class CarThread(Thread):
 			car.x += car.speed * car.vector[0] / 60.0
 			car.y += car.speed * car.vector[1] / 60.0
 			car.speed *= 0.98
-			car.canvas.coords(car.img, car.x - car.car.width / 2, car.y - car.car.height / 2)
+			car.canvas.coords(car.img, car.window.winfo_screenwidth() / car.game.map.width * (car.x - car.car.width / 2),
+							   car.window.winfo_screenheight() / car.game.map.height * car.y)
 			time.sleep(1.0 / 60.0)
