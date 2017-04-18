@@ -40,7 +40,7 @@ class CarChooser(GUI):
 			speedLabel.grid(row = 2 * i, column = 1)
 			sizeLabel = tk.Label(window, textvariable = msgs.SIZE.format(car.width, car.height), font = ("Plantagenet Cherokee", 22))
 			sizeLabel.grid(row = 2 * i + 1, column = 1)
-			choose = tk.Button(window, textvariable = msgs.CHOOSE, font = ("Plantagenet Cherokee", 22))
+			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg="#f8a1a1", font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = 2 * i, column = 2, rowspan = 2)
 
 			if self.builder.car == car:
@@ -60,7 +60,7 @@ class CarChooser(GUI):
 		window.columnconfigure(2, weight = 2)
 		window.columnconfigure(3, weight = 1)
 
-		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, bg="#f8a1a1", font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 2 + 1, column = 0, columnspan = 4, pady = 100)
 		self.children.append(backBtn)
 
@@ -89,7 +89,7 @@ class MapChooser(GUI):
 			label.grid(row = i, column = 1, rowspan = 1)
 			sizeLabel = tk.Label(window, textvariable = msgs.SIZE.format(map.width, map.height), font = ("Plantagenet Cherokee", 22))
 			sizeLabel.grid(row = i, column = 2)
-			choose = tk.Button(window, textvariable = msgs.CHOOSE, font = ("Plantagenet Cherokee", 22))
+			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg="#f8a1a1", font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = i, column = 3, rowspan = 1)
 
 			if self.builder.map == map:
@@ -110,7 +110,7 @@ class MapChooser(GUI):
 		window.columnconfigure(3, weight = 2)
 		window.columnconfigure(4, weight = 1)
 
-		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg="#f8a1a1", anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 2 + 1, column = 0, columnspan = 5, pady = 100)
 		self.children.append(backBtn)
 
