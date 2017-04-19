@@ -4,9 +4,9 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from guis import GUI, mainMenu
 import messages as msgs
+from audio import AudioPlayer
 import math
 from threading import Thread
-import time
 
 class Game(GUI):
 	def __init__(self, window, builder):
@@ -40,6 +40,9 @@ class Game(GUI):
 		self.children.append(self.canvas)
 
 	def on_resize(self, event):
+		if self.car.paused:
+			return
+
 		self.width, self.height = event.width, event.height
 		self.canvas.delete(self.background)
 		img_temp = Image.open("images/maps/" + self.map.img_file)
@@ -111,7 +114,6 @@ class Car:
 		if self.paused:
 			return
 		self.keys_pressed.clear()
-		print("PAUSE")
 		self.paused = True
 
 		canvas = self.canvas #type: tk.Canvas
@@ -148,11 +150,12 @@ class Car:
 
 	def forward(self):
 		self.speed = min(self.speed + 1.0, float(self.car.speed))
-		print("accelerate: " + str(self.speed))
+
+		if self.speed >= self.car.speed / 2:
+			AudioPlayer.playSound(AudioPlayer.DRIVING)
 
 	def backward(self):
 		self.speed = max(self.speed - 1.0, float(-self.car.speed))
-		print("break: " + str(self.speed))
 
 	def left(self):
 		self.angle -= math.pi / 16
@@ -184,6 +187,7 @@ class CarThread(Thread):
 
 	def run(self):
 		car = self.car
+		import time
 		while True:
 			if car.paused:
 				continue
@@ -224,6 +228,7 @@ class CarThread(Thread):
 					break
 
 			if collision:
+				AudioPlayer.playSound(AudioPlayer.COLLISION)
 				car.x = car.x - car.speed * car.vector[0] / 10.0
 				car.y = car.y - car.speed * car.vector[1] / 10.0
 				if car.speed > 0:

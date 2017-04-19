@@ -10,6 +10,7 @@ if tk._default_root is None:
 
 from guis.mainMenu import MainMenu
 from guis import settings
+import audio
 
 def main():
 	"""
@@ -40,6 +41,8 @@ def main():
 	settings.loadSettings()
 
 	MainMenu(window)
+
+	audio.AudioPlayer(window).start()
 
 	window.mainloop()
 
