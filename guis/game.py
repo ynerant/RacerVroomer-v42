@@ -40,10 +40,16 @@ class Car:
 		self.y = int((start_line.y_end + start_line.y_start) / 2)
 		self.speed = 0.0
 		start_line_length = start_line.length()
-		cosinus = (start_line.x_end - start_line.x_start) / start_line_length
+		dot_product = start_line.x_end - start_line.x_start
+		cosinus = dot_product / start_line_length
 		self.angle = -math.acos(cosinus) + math.pi / 2
+		if start_line.y_start > start_line.y_end:
+			self.angle += math.pi
 		self.angle = int(16 * self.angle / math.pi) * math.pi / 16
+		print(int(16 * self.angle / math.pi))
 		self.vector = self.angle_to_normalized_vector()
+		self.x -= self.vector[0] * self.car.width / 2
+		self.y -= self.vector[1] * self.car.height / 2
 		self.canvas = game.canvas
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
@@ -52,26 +58,24 @@ class Car:
 		self.img_img = ImageTk.PhotoImage(img_temp)
 		self.img = self.canvas.create_image(0, 0, image = self.img_img)
 
+		self.keys_pressed = set()
+
 		self.thread = CarThread(self)
 		self.thread.start()
 
-		window.bind("<KeyPress>", lambda event : self.catch_key_event(event))
+		window.bind("<KeyPress>", lambda event : self.catch_key_press_event(event))
+		window.bind("<KeyRelease>", lambda event : self.catch_key_release_event(event))
 
 	def angle_to_normalized_vector(self):
 		return math.cos(self.angle), math.sin(self.angle)
 
-	def catch_key_event(self, event):
-		from utils import CONTROLS
-		key = event.keysym.upper()
-		print(key)
-		if key == CONTROLS["forward"]:
-			self.forward()
-		elif key == CONTROLS["backward"]:
-			self.backward()
-		elif key == CONTROLS["left"]:
-			self.left()
-		elif key == CONTROLS["right"]:
-			self.right()
+	def catch_key_press_event(self, event):
+		self.keys_pressed.add(event.keysym.upper())
+
+
+	def catch_key_release_event(self, event):
+		self.keys_pressed.remove(event.keysym.upper())
+
 
 	def forward(self):
 		self.speed = min(self.speed + 1.0, float(self.car.speed))
@@ -109,6 +113,18 @@ class CarThread(Thread):
 	def run(self):
 		car = self.car
 		while True:
+
+			from utils import CONTROLS
+			for key in set(car.keys_pressed):
+				if key == CONTROLS["forward"]:
+					car.forward()
+				elif key == CONTROLS["backward"]:
+					car.backward()
+				elif key == CONTROLS["left"]:
+					car.left()
+				elif key == CONTROLS["right"]:
+					car.right()
+
 			newX = car.x + car.speed * car.vector[0] / 60.0
 			newY = car.y + car.speed * car.vector[1] / 60.0
 
@@ -138,7 +154,7 @@ class CarThread(Thread):
 
 			car.x = newX
 			car.y = newY
-			car.speed *= 0.98
-			car.canvas.coords(car.img, car.window.winfo_screenwidth() / car.game.map.width * (car.x - car.car.width / 2),
+			car.speed *= 0.99
+			car.canvas.coords(car.img, car.window.winfo_screenwidth() / car.game.map.width * car.x,
 							  car.window.winfo_screenheight() / car.game.map.height * car.y)
 			time.sleep(1.0 / 60.0)
