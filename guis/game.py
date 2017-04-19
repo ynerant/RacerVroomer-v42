@@ -30,7 +30,12 @@ class Game(GUI):
 		self.canvas.coords(self.background, self.width / 2, self.height / 2)
 		window.bind("<Configure>", lambda event : self.on_resize(event))
 
+		self.time_label = tk.Label(window, text = "00:00:00.000", font = ("Plantagenet Cherokee", 24), fg = "white", bg = "black")
+		self.time_label.place(x = 0, y = 0)
+		self.children.append(self.time_label)
+
 		self.car = Car(window, self)
+		self.time = -1
 
 		self.children.append(self.canvas)
 
@@ -188,6 +193,9 @@ class CarThread(Thread):
 
 			from utils import CONTROLS
 			for key in set(car.keys_pressed):
+				if car.game.time == -1:
+					car.game.time = 0
+
 				if key == CONTROLS["forward"]:
 					car.forward()
 				elif key == CONTROLS["backward"]:
@@ -229,3 +237,15 @@ class CarThread(Thread):
 			car.speed *= 0.99
 			car.canvas.coords(car.img, car.game.width / car.game.map.width * car.x, car.game.height / car.game.map.height * car.y)
 			time.sleep(1.0 / 60.0)
+
+			if car.game.time >= 0:
+				car.game.time += 1.0 / 60.0
+				t = car.game.time
+				hours = int(t // 3600)
+				t %= 3600
+				minutes = int(t // 60)
+				t %= 60
+				seconds = int(t)
+				t %= 1
+				t = int(1000 * t)
+				car.game.time_label.config(text = str(hours).zfill(2) + ":" + str(minutes).zfill(2) + ":" + str(seconds).zfill(2) + "." + str(t).zfill(3))
