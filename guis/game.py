@@ -15,20 +15,35 @@ class Game(GUI):
 		self.raw_car = builder.car
 		self.map = builder.map
 
+		self.width, self.height = window.winfo_reqwidth(), window.winfo_reqheight()
+		if window.state() == "zoomed":
+			self.width, self.height = window.winfo_screenwidth(), window.winfo_screenheight()
 		self.canvas = tk.Canvas(window, width = window.winfo_screenwidth(), height = window.winfo_screenheight(), bg = "green")
 
 		img_temp = Image.open("images/maps/" + self.map.img_file)
 		img_temp = img_temp.convert("RGBA")
-		img_temp = img_temp.resize((window.winfo_screenwidth(), window.winfo_screenheight()), Image.ANTIALIAS)
+		img_temp = img_temp.resize((self.width, self.height), Image.ANTIALIAS)
 		self.background_img = ImageTk.PhotoImage(img_temp)
-		self.background = self.canvas.create_image(window.winfo_screenwidth(), window.winfo_screenheight(), image = self.background_img)
+		self.background = self.canvas.create_image(self.width, self.height, image = self.background_img)
 		self.canvas.focus_set()
 		self.canvas.pack()
-		self.canvas.coords(self.background, window.winfo_screenwidth() / 2, window.winfo_screenheight() / 2)
+		self.canvas.coords(self.background, self.width / 2, self.height / 2)
+		window.bind("<Configure>", lambda event : self.on_resize(event))
 
 		self.car = Car(window, self)
 
 		self.children.append(self.canvas)
+
+	def on_resize(self, event):
+		self.width, self.height = event.width, event.height
+		self.canvas.delete(self.background)
+		img_temp = Image.open("images/maps/" + self.map.img_file)
+		img_temp = img_temp.convert("RGBA")
+		img_temp = img_temp.resize((self.width, self.height), Image.ANTIALIAS)
+		self.background_img = ImageTk.PhotoImage(img_temp)
+		self.background = self.canvas.create_image(self.width, self.height, image = self.background_img)
+		self.canvas.coords(self.background, self.width / 2, self.height / 2)
+		self.canvas.tag_raise(self.car.img)
 
 class Car:
 	def __init__(self, window, game):
@@ -95,7 +110,7 @@ class Car:
 		self.paused = True
 
 		canvas = self.canvas #type: tk.Canvas
-		rectangle = canvas.create_rectangle(0, 0, self.window.winfo_screenwidth(), self.window.winfo_screenheight(), fill = "#F0F0F0", stipple = "gray50")
+		rectangle = canvas.create_rectangle(0, 0, self.game.width, self.game.height, fill = "#F0F0F0", stipple = "gray50")
 
 		def resume():
 			self.paused = False
@@ -119,7 +134,7 @@ class Car:
 		fc = lambda event : resume()
 		resumeId = self.window.bind("<KeyRelease-Escape>", fc)
 
-		width, height = self.window.winfo_screenwidth(), self.window.winfo_screenheight()
+		width, height = self.game.width, self.game.height
 		resumeButton.place(x = width / 3, y = height / 4)
 		quitButton.place(x = width / 3, y = height / 2)
 
@@ -142,7 +157,8 @@ class Car:
 		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
 		img_temp = img_temp.rotate(-self.angle * 180 / math.pi, expand = 1)
 		self.img_img = ImageTk.PhotoImage(img_temp)
-		self.img = self.canvas.create_image(self.car.width, self.car.height, image = self.img_img)
+		self.canvas.delete(self.img)
+		self.img = self.canvas.create_image(self.game.width / self.game.map.width * self.x, self.game.height / self.game.map.height * self.y, image = self.img_img)
 
 	def right(self):
 		self.angle += math.pi / 16
@@ -152,7 +168,8 @@ class Car:
 		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
 		img_temp = img_temp.rotate(-self.angle * 180 / math.pi, expand = 1)
 		self.img_img = ImageTk.PhotoImage(img_temp)
-		self.img = self.canvas.create_image(self.car.width, self.car.height, image = self.img_img)
+		self.canvas.delete(self.img)
+		self.img = self.canvas.create_image(self.game.width / self.game.map.width * self.x, self.game.height / self.game.map.height * self.y, image = self.img_img)
 
 class CarThread(Thread):
 	def __init__(self, car):
@@ -210,6 +227,5 @@ class CarThread(Thread):
 			car.x = newX
 			car.y = newY
 			car.speed *= 0.99
-			car.canvas.coords(car.img, car.window.winfo_screenwidth() / car.game.map.width * car.x,
-							  car.window.winfo_screenheight() / car.game.map.height * car.y)
+			car.canvas.coords(car.img, car.game.width / car.game.map.width * car.x, car.game.height / car.game.map.height * car.y)
 			time.sleep(1.0 / 60.0)
