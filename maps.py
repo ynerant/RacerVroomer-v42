@@ -43,6 +43,9 @@ class Wall :
 		self.y_start = int(args[2])
 		self.y_end = int(args[3])
 
+	def length(self):
+		return ((self.x_end - self.x_start) ** 2 + (self.y_end - self.y_start) ** 2) ** 0.5
+
 	def __str__(self):
 		return "{Wall x=[" + str(self.x_start) + ", " + str(self.x_end) + "], y=[" + str(self.y_start) + ", " + str(self.y_end) + "]}"
 

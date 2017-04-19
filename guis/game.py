@@ -38,16 +38,19 @@ class Car:
 		start_line = game.map.start
 		self.x = int((start_line.x_end + start_line.x_start) / 2)
 		self.y = int((start_line.y_end + start_line.y_start) / 2)
+		self.speed = 0.0
+		start_line_length = start_line.length()
+		cosinus = (start_line.x_end - start_line.x_start) / start_line_length
+		self.angle = -math.acos(cosinus) + math.pi / 2
+		self.angle = int(16 * self.angle / math.pi) * math.pi / 16
+		self.vector = self.angle_to_normalized_vector()
 		self.canvas = game.canvas
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
 		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
+		img_temp = img_temp.rotate(-self.angle * 180 / math.pi, expand = 1)
 		self.img_img = ImageTk.PhotoImage(img_temp)
 		self.img = self.canvas.create_image(0, 0, image = self.img_img)
-
-		self.speed = 0.0
-		self.angle = 0.0
-		self.vector = self.angle_to_normalized_vector()
 
 		self.thread = CarThread(self)
 		self.thread.start()
