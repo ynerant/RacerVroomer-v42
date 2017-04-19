@@ -2,7 +2,8 @@
 
 import tkinter as tk
 from PIL import Image, ImageTk
-from guis import GUI
+from guis import GUI, mainMenu
+import messages as msgs
 import math
 from threading import Thread
 import time
@@ -33,7 +34,7 @@ class Car:
 	def __init__(self, window, game):
 		self.game = game
 		self.car = game.raw_car
-		self.window = window
+		self.window = window #type: tk.Tk
 
 		start_line = game.map.start
 		self.x = int((start_line.x_end + start_line.x_start) / 2)
@@ -59,23 +60,71 @@ class Car:
 		self.img = self.canvas.create_image(0, 0, image = self.img_img)
 
 		self.keys_pressed = set()
+		self.paused = False
 
 		self.thread = CarThread(self)
 		self.thread.start()
 
 		window.bind("<KeyPress>", lambda event : self.catch_key_press_event(event))
 		window.bind("<KeyRelease>", lambda event : self.catch_key_release_event(event))
+		window.bind("<FocusOut>", lambda event : self.pause())
 
 	def angle_to_normalized_vector(self):
 		return math.cos(self.angle), math.sin(self.angle)
 
 	def catch_key_press_event(self, event):
+		if self.paused:
+			return
+
 		self.keys_pressed.add(event.keysym.upper())
 
 
 	def catch_key_release_event(self, event):
-		self.keys_pressed.remove(event.keysym.upper())
+		if event.keysym.upper() == "ESCAPE":
+			self.pause()
+			return
 
+		if event.keysym.upper() in self.keys_pressed:
+			self.keys_pressed.remove(event.keysym.upper())
+
+	def pause(self):
+		if self.paused:
+			return
+		self.keys_pressed.clear()
+		print("PAUSE")
+		self.paused = True
+
+		canvas = self.canvas #type: tk.Canvas
+		rectangle = canvas.create_rectangle(0, 0, self.window.winfo_screenwidth(), self.window.winfo_screenheight(), fill = "#F0F0F0", stipple = "gray50")
+
+		def resume():
+			self.paused = False
+			canvas.delete(rectangle)
+			if resumeButton in self.game.children:
+				self.game.children.remove(resumeButton)
+			if quitButton in self.game.children:
+				self.game.children.remove(quitButton)
+			resumeButton.destroy()
+			quitButton.destroy()
+			self.window.unbind("<KeyRelease-Escape>", resumeId)
+
+		def quitGame():
+			self.thread.stopped = True
+			self.paused = False
+			mainMenu.MainMenu(self.window)
+
+		resumeButton = tk.Button(self.window, textvariable = msgs.RESUME, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = resume)
+		quitButton = tk.Button(self.window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = quitGame)
+
+		fc = lambda event : resume()
+		resumeId = self.window.bind("<KeyRelease-Escape>", fc)
+
+		width, height = self.window.winfo_screenwidth(), self.window.winfo_screenheight()
+		resumeButton.place(x = width / 3, y = height / 4)
+		quitButton.place(x = width / 3, y = height / 2)
+
+		self.game.children.append(resumeButton)
+		self.game.children.append(quitButton)
 
 	def forward(self):
 		self.speed = min(self.speed + 1.0, float(self.car.speed))
@@ -109,10 +158,16 @@ class CarThread(Thread):
 	def __init__(self, car):
 		Thread.__init__(self)
 		self.car = car
+		self.stopped = False
 
 	def run(self):
 		car = self.car
 		while True:
+			if car.paused:
+				continue
+
+			if self.stopped:
+				return
 
 			from utils import CONTROLS
 			for key in set(car.keys_pressed):

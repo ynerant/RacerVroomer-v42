@@ -24,6 +24,8 @@ class GameBuilder:
 		self.mode = mode
 
 	def start(self, window):
+		global CURRENT_GAME_BUILDER
+		CURRENT_GAME_BUILDER = None
 		game.Game(window, self)
 
 class CarChooser(GUI):

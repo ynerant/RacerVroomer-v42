@@ -96,6 +96,7 @@ WHAT_KEY_FOR = MSG("What key to {}?", "Quelle touche pour {} ?")
 SPEED = MSG("Speed : {}", "Vitesse : {}")
 SIZE = MSG("Size : {}x{}", "Taille : {}x{}")
 CHOOSE = MSG("Choose", "Choisir")
+RESUME = MSG("Resume", "Reprendre")
 
 
 ####################################################################################
