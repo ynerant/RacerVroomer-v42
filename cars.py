@@ -6,17 +6,20 @@ import messages as msgs
 CARS = []
 
 class Car :
-	def __init__(self, name : msgs.MSG, speed, width, height, img_file):
+	def __init__(self, name : msgs.MSG, max_speed : float, acceleration : float, maniability : float, width : int, height : int, img_file : str, thumbnail_file : str):
 		self.name = name
-		self.speed = speed
+		self.max_speed = max_speed
+		self.acceleration = acceleration
+		self.maniability = maniability
 		self.width = width
 		self.height = height
 		self.img_file = img_file
+		self.thumbnail_file = thumbnail_file
 		CARS.append(self)
 
 	def __str__(self):
-		return "{Car name=\"" + self.name.get() + "\" speed=" + str(self.speed) + " size=" + str(self.width) + "x" + str(self.height) + "}"
+		return "{Car name=\"" + self.name.get() + "\" speed=" + str(self.max_speed) + " size=" + str(self.width) + "x" + str(self.height) + "}"
 
-RED_CAR = Car(msgs.RED_CAR, 42, 42, 42, "red_car.gif")
-BLUE_CAR = Car(msgs.BLUE_CAR, 34, 34, 34, "blue_car.png")
-GREEN_CAR = Car(msgs.GREEN_CAR, 10, 10, 10, "green_car.png")
+RED_CAR = Car(msgs.RED_CAR, 42.0, 1.0, 42.0, 42, 42, "red_car.gif", "red_car.png")
+BLUE_CAR = Car(msgs.BLUE_CAR, 34.0, 0.34, 34.0, 34, 34, "red_car.gif", "red_car.png")
+GREEN_CAR = Car(msgs.GREEN_CAR, 10.0, 0.10, 10.0, 10, 10, "red_car.gif", "red_car.png")

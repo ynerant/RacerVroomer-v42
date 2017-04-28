@@ -3,6 +3,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from guis import GUI, mainMenu
+
+import cars
 import messages as msgs
 from audio import AudioPlayer
 import math
@@ -56,7 +58,7 @@ class Game(GUI):
 class Car:
 	def __init__(self, window, game):
 		self.game = game
-		self.car = game.raw_car
+		self.car = game.raw_car #type: cars.Car
 		self.window = window #type: tk.Tk
 
 		start_line = game.map.start
@@ -69,8 +71,9 @@ class Car:
 		self.angle = -math.acos(cosinus) + math.pi / 2
 		if start_line.y_start > start_line.y_end:
 			self.angle += math.pi
-		self.angle = int(16 * self.angle / math.pi) * math.pi / 16
-		print(int(16 * self.angle / math.pi))
+		self.angle_division = self.car.maniability
+		self.angle = int(self.angle_division * self.angle / math.pi) * math.pi / self.angle_division
+		print(int(self.angle_division * self.angle / math.pi))
 		self.vector = self.angle_to_normalized_vector()
 		self.x -= self.vector[0] * self.car.width / 2
 		self.y -= self.vector[1] * self.car.height / 2
@@ -149,16 +152,16 @@ class Car:
 		self.game.children.append(quitButton)
 
 	def forward(self):
-		self.speed = min(self.speed + 1.0, float(self.car.speed))
+		self.speed = min(self.speed + self.car.acceleration, float(self.car.max_speed))
 
-		if self.speed >= self.car.speed / 2:
+		if self.speed >= self.car.max_speed / 2:
 			AudioPlayer.playSound(AudioPlayer.DRIVING)
 
 	def backward(self):
-		self.speed = max(self.speed - 1.0, float(-self.car.speed))
+		self.speed = max(self.speed - self.car.acceleration, float(-self.car.max_speed))
 
 	def left(self):
-		self.angle -= math.pi / 16
+		self.angle -= math.pi / self.angle_division
 		self.vector = self.angle_to_normalized_vector()
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
@@ -169,7 +172,7 @@ class Car:
 		self.img = self.canvas.create_image(self.game.width / self.game.map.width * self.x, self.game.height / self.game.map.height * self.y, image = self.img_img)
 
 	def right(self):
-		self.angle += math.pi / 16
+		self.angle += math.pi / self.angle_division
 		self.vector = self.angle_to_normalized_vector()
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
