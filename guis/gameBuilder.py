@@ -42,27 +42,33 @@ class CarChooser(GUI):
 			thumbnail = tk.PhotoImage(file = "images/thumbnails/" + car.thumbnail_file)
 			thumbnailLabel = tk.Label(window, image = thumbnail)
 			thumbnailLabel.image = thumbnail
-			thumbnailLabel.grid(row = 4 * i, column = 0, rowspan = 4)
+			thumbnailLabel.grid(row = 5 * i, column = 0, rowspan = 4)
 			label = tk.Label(window, textvariable = car.name, font = ("Plantagenet Cherokee", 30))
-			label.grid(row = 4 * i, column = 1, rowspan = 4)
+			label.grid(row = 5 * i, column = 1, rowspan = 4)
 			speedLabel = tk.Label(window, textvariable = msgs.MAX_SPEED.format(car.max_speed), font = ("Plantagenet Cherokee", 16))
-			speedLabel.grid(row = 4 * i, column = 2)
+			speedLabel.grid(row = 5 * i, column = 2)
 			accelerateLabel = tk.Label(window, textvariable = msgs.ACCELERATION.format(60 * car.acceleration), font = ("Plantagenet Cherokee", 16))
-			accelerateLabel.grid(row = 4 * i + 1, column = 2)
+			accelerateLabel.grid(row = 5 * i + 1, column = 2)
 			sizeLabel = tk.Label(window, textvariable = msgs.SIZE.format(car.width, car.height), font = ("Plantagenet Cherokee", 16))
-			sizeLabel.grid(row = 4 * i + 2, column = 2)
+			sizeLabel.grid(row = 5 * i + 2, column = 2)
 			maniabilityLabel = tk.Label(window, textvariable = msgs.MANIABILITY.format(car.maniability), font = ("Plantagenet Cherokee", 16))
-			maniabilityLabel.grid(row = 4 * i + 3, column = 2)
+			maniabilityLabel.grid(row = 5 * i + 3, column = 2)
 			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg="#f8a1a1", font = ("Plantagenet Cherokee", 22))
-			choose.grid(row = 4 * i, column = 3, rowspan = 4)
+			choose.grid(row = 5 * i, column = 3, rowspan = 4)
 
 			if self.builder.car == car:
 				ok = tk.Label(window, text = "ü", font = ("Wingdings", 42))
-				ok.grid(row = 4 * i, column = 4, rowspan = 4)
+				ok.grid(row = 5 * i, column = 4, rowspan = 4)
 				self.children.append(ok)
+
+			if i < len(cars.CARS) - 1:
+				canvas = tk.Canvas(window, width = window.winfo_screenwidth(), height = 5, bg = "lightgray")
+				canvas.grid(row = 5 * i + 4, columnspan = 4)
+				self.children.append(canvas)
 
 			self.registerChooseListener(window, choose, car)
 
+			self.children.append(thumbnailLabel)
 			self.children.append(label)
 			self.children.append(speedLabel)
 			self.children.append(accelerateLabel)
@@ -77,7 +83,7 @@ class CarChooser(GUI):
 		window.columnconfigure(4, weight = 1)
 
 		backBtn = tk.Button(window, textvariable = msgs.BACK, bg="#f8a1a1", font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
-		backBtn.grid(row = len(cars.CARS) * 4 + 1, column = 0, columnspan = 4, pady = 100)
+		backBtn.grid(row = len(cars.CARS) * 5 + 1, column = 0, columnspan = 4, pady = 100)
 		self.children.append(backBtn)
 
 	def registerChooseListener(self, window, button, car):
