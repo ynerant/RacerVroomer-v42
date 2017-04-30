@@ -234,10 +234,7 @@ class CarThread(Thread):
 				AudioPlayer.playSound(AudioPlayer.COLLISION)
 				car.x = car.x - car.speed * car.vector[0] / 10.0
 				car.y = car.y - car.speed * car.vector[1] / 10.0
-				if car.speed > 0:
-					car.speed = -car.speed
-				else:
-					car.speed = 0.0
+				car.speed = -car.speed
 				continue
 
 			car.x = newX

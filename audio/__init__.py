@@ -30,6 +30,6 @@ class AudioPlayer(Thread):
 			time.sleep(0.05)
 
 	@staticmethod
-	def playSound(sound, loops = 1):
+	def playSound(sound, loops = 0):
 		if AudioPlayer.window.sounds_enabled and (AudioPlayer._channels[sound] is None or not AudioPlayer._channels[sound].get_busy()):
 			AudioPlayer._channels[sound] = sound.play(loops)
