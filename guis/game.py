@@ -36,6 +36,11 @@ class Game(GUI):
 		self.time_label.place(x = 0, y = 0)
 		self.children.append(self.time_label)
 
+		self.lap = 0
+		self.lap_label = tk.Label(window, text = msgs.LAP.get().format(self.lap, self.map.max_laps), font = ("Plantagenet Cherokee", 24), fg = "white", bg = "black")
+		self.lap_label.place(x = 0, y = self.time_label.winfo_reqheight(), width = self.time_label.winfo_reqwidth())
+		self.children.append(self.lap_label)
+
 		self.car = Car(window, self)
 		self.time = -1
 
@@ -68,12 +73,12 @@ class Car:
 		start_line_length = start_line.length()
 		dot_product = start_line.x_end - start_line.x_start
 		cosinus = dot_product / start_line_length
-		self.angle = -math.acos(cosinus) + math.pi / 2
+		self.start_angle = -math.acos(cosinus) + math.pi / 2
+		self.angle = self.start_angle
 		if start_line.y_start > start_line.y_end:
 			self.angle += math.pi
 		self.angle_division = self.car.maniability
 		self.angle = int(self.angle_division * self.angle / math.pi) * math.pi / self.angle_division
-		print(int(self.angle_division * self.angle / math.pi))
 		self.vector = self.angle_to_normalized_vector()
 		self.x -= self.vector[0] * self.car.width / 2
 		self.y -= self.vector[1] * self.car.height / 2
@@ -162,6 +167,9 @@ class Car:
 
 	def left(self):
 		self.angle -= math.pi / self.angle_division
+		self.angle %= 2 * math.pi
+		if self.angle > math.pi:
+			self.angle -= 2 * math.pi
 		self.vector = self.angle_to_normalized_vector()
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
@@ -173,6 +181,9 @@ class Car:
 
 	def right(self):
 		self.angle += math.pi / self.angle_division
+		self.angle %= 2 * math.pi
+		if self.angle > math.pi:
+			self.angle -= 2 * math.pi
 		self.vector = self.angle_to_normalized_vector()
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
@@ -187,6 +198,8 @@ class CarThread(Thread):
 		Thread.__init__(self)
 		self.car = car
 		self.stopped = False
+		self.last_passage = -1
+		self.last_passage_dir = 1
 
 	def run(self):
 		car = self.car
@@ -254,3 +267,21 @@ class CarThread(Thread):
 				t %= 1
 				t = int(1000 * t)
 				car.game.time_label.config(text = str(hours).zfill(2) + ":" + str(minutes).zfill(2) + ":" + str(seconds).zfill(2) + "." + str(t).zfill(3))
+
+			wall = car.game.map.start
+			dot_product = (wall.x_end - wall.x_start) * (newX - wall.x_start) + (wall.y_end - wall.y_start) * (newY - wall.y_start)
+			line = (wall.x_end - wall.x_start, wall.y_end - wall.y_start)
+			line_length = math.sqrt(line[0] ** 2 + line[1] ** 2)
+			xH, yH = dot_product / (line_length ** 2) * line[0] + wall.x_start, dot_product / (line_length ** 2) * line[1] + wall.y_start
+
+			if xH < min(wall.x_start, wall.x_end) or xH > max(wall.x_start, wall.x_end) or yH < min(wall.y_start, wall.y_end) or yH > max(wall.y_start, wall.y_end):
+				continue
+
+			if math.sqrt((xH - newX) ** 2 + (yH - newY) ** 2) <= math.fabs(car.speed) / 10.0:
+				direction = (1 if math.fabs(car.start_angle - car.angle) <= math.pi / 2 else -1) * (1 if car.speed > 0 else -1)
+				if direction == self.last_passage_dir and time.time() - self.last_passage < 1:
+					continue
+				self.last_passage = time.time()
+				self.last_passage_dir = direction
+				car.game.lap += direction
+				car.game.lap_label.config(text = msgs.LAP.get().format(car.game.lap, car.game.map.max_laps))

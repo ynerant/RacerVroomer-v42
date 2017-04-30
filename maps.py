@@ -24,6 +24,7 @@ class Map :
 		self.thumbnail = obj["thumbnail"]
 		self.width = int(obj["width"])
 		self.height = int(obj["height"])
+		self.max_laps = int(obj["max_laps"])
 		self.start = Wall(obj["start"])
 		raw_walls = obj["walls"]
 		self.walls = []
@@ -34,7 +35,7 @@ class Map :
 
 	def __str__(self):
 		return "{Map name=\"" + self.name.get() + "\", size=" + str(self.width) + "x" + str(self.height) + ", filename=\"" + self.fileName + "\", img_file=\"" + self.img_file \
-			   + "\", start=" + str(self.start) + ", walls=" + str(self.walls) + "}"
+			   + "\", max_laps=" + str(self.max_laps) + ", start=" + str(self.start) + ", walls=" + str(self.walls) + "}"
 
 class Wall :
 	def __init__(self, args):

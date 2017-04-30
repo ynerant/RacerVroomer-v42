@@ -3,7 +3,8 @@
 	"thumbnail": "8_circuit_thumbnail.png",
 	"width": 1920,
 	"height": 1080,
-	"start": [1225, 1225, 799, 906],
+	"max_laps": 3,
+	"start": [1225, 1225, 805, 906],
 	"walls": [
 		[504, 1424, 805, 805],
 		[1424, 1597, 805, 732],

@@ -99,6 +99,7 @@ SIZE = MSG("Size : {}x{} px²", "Taille : {}x{} px²")
 MANIABILITY = MSG("Maniability : {:.1f} %", "Maniabilité : {:.1f} %")
 CHOOSE = MSG("Choose", "Choisir")
 RESUME = MSG("Resume", "Reprendre")
+LAP = MSG("Lap {}/{}", "Tour {}/{}")
 
 
 ####################################################################################

@@ -133,7 +133,6 @@ class Controls(GUI):
 			popup.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2) - 40))
 			sound_started = tk.BooleanVar(False)
 			def catch_key_event(event):
-				print(event)
 				key = event.keycode
 				if key == 27:
 					popup.destroy()
