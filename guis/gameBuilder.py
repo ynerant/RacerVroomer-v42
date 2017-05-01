@@ -97,8 +97,8 @@ class CarChooser(GUI):
 			self.appendChild(maniabilityLabel)
 			self.appendChild(choose)
 
-		backBtn = tk.Button(frame, textvariable = msgs.BACK, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20,
-							borderwidth = 10, relief = "groove", command = lambda : back(window))
+		backBtn = tk.Button(frame, textvariable = msgs.BACK, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15,
+							borderwidth = 4, relief = "raise", command = lambda : back(window))
 		backBtn.grid(row = 5 * (len(cars.CARS) + 1), columnspan = 4, pady = 100)
 		self.appendChild(backBtn)
 
@@ -162,7 +162,7 @@ class MapChooser(GUI):
 		window.columnconfigure(4, weight = 1)
 
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg = utils.BUTTON_BACKGROUND, anchor = "center",
-							width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+							width = 15, borderwidth = 4, relief = "raise", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 2 + 1, column = 0, columnspan = 5, pady = 100)
 		self.appendChild(backBtn)
 
