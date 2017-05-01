@@ -16,12 +16,14 @@ class MainMenu(GUI):
 		def on_closing():
 			os._exit(0) # Force closing process, killing all threads
 
+		window.protocol("WM_DELETE_WINDOW", on_closing)
+
 		bg = Image.open("images/menu/minia.png")
+		bg = bg.resize((window.winfo_screenwidth(), window.winfo_screenheight()), Image.ANTIALIAS)
 		bgImage = ImageTk.PhotoImage(bg)
 		labelImage = tk.Label(window, image = bgImage)
+		labelImage.image = bgImage
 		labelImage.pack()
-
-		window.protocol("WM_DELETE_WINDOW", on_closing)
 
 		onePlayerMode = tk.Button(window, textvariable = msgs.SINGLE_PLAYER, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda  : playerMode.SinglePlayer(window))
 		multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : playerMode.MultiPlayer(window))

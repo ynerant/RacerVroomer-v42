@@ -98,16 +98,16 @@ class Controls(GUI):
 	def __init__(self, window):
 		super().__init__()
 
-		forwardLabel = tk.Label(window, textvariable = msgs.FORWARD, font = ("Plantagenet Cherokee", 21))
+		forwardLabel = tk.Label(window, textvariable = msgs.FORWARD, font = ("Plantagenet Cherokee", 21),width = 10)
 		forwardText = tk.StringVar(window, utils.CONTROLS["forward"].replace("_", " "))
 		forward = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = forwardText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
-		leftLabel = tk.Label(window, textvariable = msgs.TURN_LEFT, font = ("Plantagenet Cherokee", 21))
+		leftLabel = tk.Label(window, textvariable = msgs.TURN_LEFT, font = ("Plantagenet Cherokee", 21),width = 10)
 		leftText = tk.StringVar(window, utils.CONTROLS["left"].replace("_", " "))
 		left = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = leftText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
-		backwardLabel = tk.Label(window, textvariable = msgs.BACKWARD, font = ("Plantagenet Cherokee", 21))
+		backwardLabel = tk.Label(window, textvariable = msgs.BACKWARD, font = ("Plantagenet Cherokee", 21),width = 10)
 		backwardText = tk.StringVar(window, utils.CONTROLS["backward"].replace("_", " "))
 		backward = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = backwardText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
-		rightLabel = tk.Label(window, textvariable = msgs.TURN_RIGHT, font = ("Plantagenet Cherokee", 21))
+		rightLabel = tk.Label(window, textvariable = msgs.TURN_RIGHT, font = ("Plantagenet Cherokee", 21),width = 10)
 		rightText = tk.StringVar(window, utils.CONTROLS["right"].replace("_", " "))
 		right = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = rightText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
 
