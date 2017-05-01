@@ -7,10 +7,11 @@ class AudioPlayer(Thread):
 	mixer.pre_init(44100, -16, 2, 2048)
 	pygame.init()
 	window = None
+	CLICK = mixer.Sound("audio/click.wav")
 	MUSIC = mixer.Sound("audio/Guazu.wav")
 	COLLISION = mixer.Sound("audio/Glass_break.wav")
 	DRIVING = mixer.Sound("audio/driving.wav")
-	_channels = {COLLISION: None, DRIVING: None}
+	_channels = {COLLISION: None, DRIVING: None, CLICK: None}
 
 	def __init__(self, window):
 		Thread.__init__(self)

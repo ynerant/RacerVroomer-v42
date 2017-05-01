@@ -30,8 +30,7 @@ class GUI:
 	
 	def clickButton(self, button):
 		print("A button is clicked!")
-		# Now play the sound
-		#AudioPlayer.playSound(AudioPlayer.CLICK)
+		AudioPlayer.playSound(AudioPlayer.CLICK)
 
 def back(window):
 	gui = OLD_GUIS.pop(0)(window)
