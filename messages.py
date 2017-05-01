@@ -4,6 +4,7 @@ import locale
 from guis import settings
 import utils
 
+# Affectation de la langue par défaut si non présente
 if utils.isWindows():
 	if locale.getlocale(locale.LC_ALL) == (None, None):
 		locale.setlocale(locale.LC_ALL, locale.getdefaultlocale()[0][:2])
@@ -11,6 +12,7 @@ else:
 	if locale.getlocale(locale.LC_CTYPE) == (None, None):
 		locale.setlocale(locale.LC_CTYPE, locale.getdefaultlocale()[0][:2])
 
+# Affectation de la langue d'utilisation en fonction des paramètres ou du système d'exploitation (français ou anglais)
 LOCALE = StringVar(value = locale.getlocale()[0][:2])
 if LOCALE.get() != "fr" and LOCALE.get() != "en":
 	LOCALE.set("en")
@@ -18,15 +20,21 @@ LOCALE.trace_variable("w", lambda *args : settings.saveSettings())
 
 class MSG(StringVar):
 	def __init__(self, english_message : str, french_message : str):
+		"""
+		Constructeur d'un message localisé
+		Le premier argument est le message en anglais, le second est en français
+		"""
 		super().__init__()
 		self.en = english_message
 		self.fr = french_message
 
+		# Si un des messages est vide, l'autre est choisi
 		if len(self.fr) == 0:
 			self.fr = self.en
 		if len(self.en) == 0:
 			self.en = self.fr
 
+		# Changement du message d'utilisation lorsque la langue est changée
 		# noinspection PyUnusedLocal
 		def callback(*kwargs):
 			if isFrench():
@@ -34,13 +42,22 @@ class MSG(StringVar):
 			else:
 				self.set(self.en)
 
+		# Lorsque la valeur de la variable LOCALE est changée, la fonction callback est invoquée
 		LOCALE.trace_variable("w", callback)
 		callback()
 
 	def clone(self):
+		"""
+		Clonage de l'objet
+		Chaque modification sur l'une des instances de changera pas l'autre (notamment utile en cas de formattage ou de switch)
+		"""
 		return MSG(self.en, self.fr)
 
 	def switch(self, msg):
+		"""
+		Change les textes à partir d'un autre message
+		Utile pour changer le texte d'un bouton (notamment pour activer/désactiver les sons)
+		"""
 		self.en = msg.en
 		self.fr = msg.fr
 		if isFrench():
@@ -49,6 +66,9 @@ class MSG(StringVar):
 			self.set(self.en)
 
 	def format(self, *args):
+		"""
+		Formatte le message à partir d'arguments
+		"""
 		obj = self.clone()
 		obj.en = obj.en.format(*list(args))
 		obj.fr = obj.fr.format(*list(args))
@@ -59,28 +79,43 @@ class MSG(StringVar):
 		return obj
 
 def isEnglish():
+	"""
+	Renvoie True ssi le jeu est en anglais
+	"""
 	return LOCALE.get() == "en"
 
 
 def isFrench():
+	"""
+	Renvoie True ssi le jeu est en français
+	"""
 	return not isEnglish()
 
 def setEnglish():
+	"""
+	Changement de la langue vers l'anglais 
+	"""
 	LOCALE.set("en")
 
 def setFrench():
+	"""
+	Changement de la langue vers le français
+	"""
 	LOCALE.set("fr")
 
 def switchLanguage():
+	"""
+	Changement de langue (anglais -> français ou français -> anglais)
+	"""
 	if isEnglish():
 		setFrench()
 	else:
 		setEnglish()
 
 
-####################################################################################
-################################ Title screen menus ################################
-####################################################################################
+############################################################################
+############################# Messages généraux ############################
+############################################################################
 
 SINGLE_PLAYER = MSG("Singleplayer", "Un joueur")
 MAP_CHOICE = MSG("Choose map", "Choisir la carte")
@@ -110,9 +145,9 @@ LAP = MSG("Lap", "Tour")
 TIME = MSG("Time", "Temps")
 
 
-####################################################################################
-################################## Controls names ##################################
-####################################################################################
+###########################################################################
+############################ Noms des contrôles ###########################
+###########################################################################
 
 FORWARD = MSG("Accelerate", "Accélérer")
 TURN_LEFT = MSG("Turn left", "Tourner à gauche")
@@ -121,25 +156,25 @@ TURN_RIGHT = MSG("Turn right", "Tourner à droite")
 LOCAL = MSG("Local", "Local")
 ONLINE = MSG("Online", "En ligne")
 
-####################################################################################
-################################## Boxes messages ##################################
-####################################################################################
+############################################################################
+############################ Boîtes de dialogue ############################
+############################################################################
 
 SOON = MSG("Soon!", "Bientôt !")
 FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette fonctionnalité sera (probablement) accessible plus tard !")
 
-####################################################################################
-################################## Cars names ######################################
-####################################################################################
+############################################################################
+########################### Noms des voitures ##############################
+############################################################################
 
 RED_CAR = MSG("Red Speedo", "La Fulgurante Rouge")
 BLUE_CAR = MSG("Beauty Blue", "La Belle Bleue")
 GREEN_CAR = MSG("E-Car", "E-Voiture")
 
 
-####################################################################################
-################################## Maps names ######################################
-####################################################################################
+############################################################################
+############################ Noms des cartes ###############################
+############################################################################
 
 BABY = MSG("Baby loop", "Circuit Baby")
 CIRCUIT_8 = MSG("8-Circuit", "Circuit en 8")

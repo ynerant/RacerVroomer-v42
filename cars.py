@@ -3,10 +3,22 @@
 import messages as msgs
 #import tkinter as tk
 
+# Liste de toutes les voitures disponibles
 CARS = []
 
 class Car :
 	def __init__(self, name : msgs.MSG, max_speed : float, acceleration : float, maniability : float, width : int, height : int, img_file : str, thumbnail_file : str):
+		"""
+		Constructeur par défaut d'une voiture
+		Le nom est localisé
+		La vitesse max est en px/s
+		L'accélération est en px/s²
+		L'angle d'orientation de la voiture est déterminé par la maniabilité; angle = 2pi / maniabilité
+		Plus la maniabilité est élevée, moins la voiture va tourner vite
+		width (longueur) et height (hauteur) représentent la taille de la voiture en pixels
+		img_file (resp. thumbnail_file) est le chemin relatif à ./images/cars/ (resp. ./images/thumbnails/)
+				de l'image de la voiture (resp. de la miniature du sélecteur de voiture)
+		"""
 		self.name = name
 		self.max_speed = max_speed
 		self.acceleration = acceleration
@@ -21,5 +33,5 @@ class Car :
 		return "{Car name=\"" + self.name.get() + "\" speed=" + str(self.max_speed) + " size=" + str(self.width) + "x" + str(self.height) + "}"
 
 RED_CAR = Car(msgs.RED_CAR, 42.0, 1.0, 42.0, 42, 42, "red_car.gif", "red_car.png")
-BLUE_CAR = Car(msgs.BLUE_CAR, 34.0, 0.34, 34.0, 34, 34, "bluecar.gif", "bluecar.png")
-GREEN_CAR = Car(msgs.GREEN_CAR, 10.0, 0.10, 10.0, 10, 10, "greencar.gif", "greencar.png")
+BLUE_CAR = Car(msgs.BLUE_CAR, 34.0, 0.34, 34.0, 34, 34, "blue_car.gif", "blue_car.png")
+GREEN_CAR = Car(msgs.GREEN_CAR, 10.0, 0.10, 10.0, 10, 10, "green_car.gif", "green_car.png")

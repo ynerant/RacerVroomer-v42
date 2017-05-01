@@ -4,13 +4,20 @@ import messages as msgs
 import json
 #import tkinter as tk
 
+# Liste de toutes les cartes disponibles
 MAPS = []
 
 class Map :
 	def __init__(self, name : msgs.MSG, fileName):
+		"""
+		Constructeur par défaut des cartes
+		:param name: Name in-game of the map (localized)
+		:param fileName: Path relative to ./maps to find the JSON file containing map infos
+		"""
 		self.name = name
 		self.fileName = fileName
 
+		# Loading JSON file
 		try:
 			with open("maps/" + fileName, "r") as f:
 				jsoned = f.read()
@@ -18,19 +25,24 @@ class Map :
 			print("An error occured while loading the map called \"" + name.en + "\" with filename \"" + fileName + "\", map not loaded")
 			return
 
+		# Parsing the JSON file into a dictionnary
 		obj = json.loads(jsoned) #type: dict
 
+		# Attributing all parameters (img file, thumbnail file, width, height, laps, start line and walls)
 		self.img_file = obj["img_file"]
 		self.thumbnail = obj["thumbnail"]
 		self.width = int(obj["width"])
 		self.height = int(obj["height"])
 		self.max_laps = int(obj["max_laps"])
+		# Start line is considered line a wall
+		# A wall is a line
 		self.start = Wall(obj["start"])
 		raw_walls = obj["walls"]
 		self.walls = []
 		for raw_wall in raw_walls:
 			self.walls.append(Wall(raw_wall))
 
+		# Appending MAPS
 		MAPS.append(self)
 
 	def __str__(self):
@@ -39,6 +51,11 @@ class Map :
 
 class Wall :
 	def __init__(self, args):
+		"""
+		Default wall constructor
+		:param args: list or tuple, which length is 4.
+		First value is the abscissa
+		"""
 		self.x_start = int(args[0])
 		self.x_end = int(args[1])
 		self.y_start = int(args[2])
