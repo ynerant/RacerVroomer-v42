@@ -129,8 +129,8 @@ FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette 
 ####################################################################################
 
 RED_CAR = MSG("Red Speedo", "La Fulgurante Rouge")
-BLUE_CAR = MSG("Blue car", "La voiture bleue")
-GREEN_CAR = MSG("Green car", "La voiture verte")
+BLUE_CAR = MSG("Beauty Blue", "La Belle Bleue")
+GREEN_CAR = MSG("E-Car", "E-Voiture")
 
 
 ####################################################################################
