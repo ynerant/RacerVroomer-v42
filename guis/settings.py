@@ -84,8 +84,8 @@ class Settings(GUI):
 			window.sounds_enabled ^= True
 			saveSettings()
 
-		music.bind("<Button-1>", switchMusicState)
-		sounds.bind("<Button-1>", switchSoundsState)
+		music.bind("<ButtonRelease-1>", switchMusicState)
+		sounds.bind("<ButtonRelease-1>", switchSoundsState)
 
 		self.appendChild(music)
 		self.appendChild(sounds)

@@ -18,7 +18,7 @@ class GUI:
 	def appendChild(self, child):
 		self._children.append(child)
 		if type(child) is tk.Button:
-			child.bind("<ButtonRelease-1>", lambda event : self.clickButton(child))
+			child.bind("<Button-1>", lambda event : self.clickButton(child))
 
 	def destroy(self):
 		for child in self._children:
@@ -29,7 +29,6 @@ class GUI:
 		self._children.clear()
 	
 	def clickButton(self, button):
-		print("A button is clicked!")
 		AudioPlayer.playSound(AudioPlayer.CLICK)
 
 def back(window):
