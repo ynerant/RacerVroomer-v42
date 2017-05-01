@@ -35,17 +35,17 @@ class Game(GUI):
 
 		self.time_label = tk.Label(window, text = "00:00:00.000", font = ("Plantagenet Cherokee", 24), fg = "white", bg = "black")
 		self.time_label.place(x = 0, y = 0)
-		self.children.append(self.time_label)
+		self.appendChild(self.time_label)
 
 		self.lap = 0
 		self.lap_label = tk.Label(window, text = msgs.LAP_NUMBER.get().format(self.lap, self.map.max_laps), font = ("Plantagenet Cherokee", 24), fg ="white", bg ="black")
 		self.lap_label.place(x = 0, y = self.time_label.winfo_reqheight(), width = self.time_label.winfo_reqwidth())
-		self.children.append(self.lap_label)
+		self.appendChild(self.lap_label)
 
 		self.car = Car(window, self)
 		self.time = -1
 
-		self.children.append(self.canvas)
+		self.appendChild(self.canvas)
 
 	def on_resize(self, event):
 		if self.car.paused or self.car.thread.stopped:
@@ -158,8 +158,8 @@ class Car:
 		resumeButton.place(x = (width - resumeButton.winfo_reqwidth()) / 2, y = height / 4)
 		quitButton.place(x = (width - quitButton.winfo_reqwidth()) / 2, y = height / 2)
 
-		self.game.children.append(resumeButton)
-		self.game.children.append(quitButton)
+		self.game.appendChild(resumeButton)
+		self.game.appendChild(quitButton)
 
 	def forward(self):
 		self.speed = min(self.speed + self.car.acceleration, float(self.car.max_speed))
@@ -319,8 +319,8 @@ class CarThread(Thread):
 		quitButton.place(x = (car.game.window.winfo_reqwidth() - quitButton.winfo_reqwidth()) / 2, y = (car.game.window.winfo_reqheight() - quitButton.winfo_reqheight()) / 2)
 		lap_times.place(x = car.game.window.winfo_reqwidth() - lap_times.winfo_reqwidth(), y = car.game.window.winfo_reqheight() / 5)
 
-		car.game.children.append(quitButton)
-		car.game.children.append(lap_times)
+		car.game.appendChild(quitButton)
+		car.game.appendChild(lap_times)
 
 def formatTime(t: float):
 	hours = int(t // 3600)

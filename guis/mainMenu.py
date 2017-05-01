@@ -26,7 +26,7 @@ class MainMenu(GUI):
 		options.grid(row = 2,column = 2)
 		quitGame.grid(row = 2,column = 3)
 
-		self.children.append(onePlayerMode)
-		self.children.append(multiplayer)
-		self.children.append(options)
-		self.children.append(quitGame)
+		self.appendChild(onePlayerMode)
+		self.appendChild(multiplayer)
+		self.appendChild(options)
+		self.appendChild(quitGame)

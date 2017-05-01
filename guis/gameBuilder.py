@@ -58,22 +58,22 @@ class CarChooser(GUI):
 			if self.builder.car == car:
 				ok = tk.Label(window, text = "ü", font = ("Wingdings", 42))
 				ok.grid(row = 5 * i, column = 4, rowspan = 4)
-				self.children.append(ok)
+				self.appendChild(ok)
 
 			if i < len(cars.CARS) - 1:
 				canvas = tk.Canvas(window, width = window.winfo_screenwidth(), height = 5, bg = "lightgray")
 				canvas.grid(row = 5 * i + 4, columnspan = 4)
-				self.children.append(canvas)
+				self.appendChild(canvas)
 
 			self.registerChooseListener(window, choose, car)
 
-			self.children.append(thumbnailLabel)
-			self.children.append(label)
-			self.children.append(speedLabel)
-			self.children.append(accelerateLabel)
-			self.children.append(sizeLabel)
-			self.children.append(maniabilityLabel)
-			self.children.append(choose)
+			self.appendChild(thumbnailLabel)
+			self.appendChild(label)
+			self.appendChild(speedLabel)
+			self.appendChild(accelerateLabel)
+			self.appendChild(sizeLabel)
+			self.appendChild(maniabilityLabel)
+			self.appendChild(choose)
 
 		window.columnconfigure(0, weight = 1)
 		window.columnconfigure(1, weight = 3)
@@ -83,7 +83,7 @@ class CarChooser(GUI):
 
 		backBtn = tk.Button(window, textvariable = msgs.BACK, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 5 + 1, column = 0, columnspan = 4, pady = 100)
-		self.children.append(backBtn)
+		self.appendChild(backBtn)
 
 	def registerChooseListener(self, window, button, car):
 		def choose_car():
@@ -116,14 +116,14 @@ class MapChooser(GUI):
 			if self.builder.map == map:
 				ok = tk.Label(window, text = "ü", font = ("Wingdings", 42))
 				ok.grid(row = i, column = 4, rowspan = 1)
-				self.children.append(ok)
+				self.appendChild(ok)
 
 			self.registerChooseListener(window, choose, map)
 
-			self.children.append(thumbnailLabel)
-			self.children.append(label)
-			self.children.append(sizeLabel)
-			self.children.append(choose)
+			self.appendChild(thumbnailLabel)
+			self.appendChild(label)
+			self.appendChild(sizeLabel)
+			self.appendChild(choose)
 
 		window.columnconfigure(0, weight = 1)
 		window.columnconfigure(1, weight = 3)
@@ -133,7 +133,7 @@ class MapChooser(GUI):
 
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg = utils.BUTTON_BACKGROUND, anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 2 + 1, column = 0, columnspan = 5, pady = 100)
-		self.children.append(backBtn)
+		self.appendChild(backBtn)
 
 	def registerChooseListener(self, window, button, map):
 		def choose_map():

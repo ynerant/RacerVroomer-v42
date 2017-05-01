@@ -24,10 +24,10 @@ class SinglePlayer(GUI):
 		start.pack()
 		backBtn.pack()
 
-		self.children.append(car)
-		self.children.append(chooseMap)
-		self.children.append(start)
-		self.children.append(backBtn)
+		self.appendChild(car)
+		self.appendChild(chooseMap)
+		self.appendChild(start)
+		self.appendChild(backBtn)
 
 class MultiPlayer(GUI):
 	def __init__(self, window):
@@ -41,6 +41,6 @@ class MultiPlayer(GUI):
 		online.pack()
 		backBtn.pack()
 
-		self.children.append(local)
-		self.children.append(online)
-		self.children.append(backBtn)
+		self.appendChild(local)
+		self.appendChild(online)
+		self.appendChild(backBtn)

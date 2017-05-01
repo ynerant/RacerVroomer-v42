@@ -87,11 +87,11 @@ class Settings(GUI):
 		music.bind("<Button-1>", switchMusicState)
 		sounds.bind("<Button-1>", switchSoundsState)
 
-		self.children.append(music)
-		self.children.append(sounds)
-		self.children.append(changeLanguage)
-		self.children.append(controls)
-		self.children.append(back)
+		self.appendChild(music)
+		self.appendChild(sounds)
+		self.appendChild(changeLanguage)
+		self.appendChild(controls)
+		self.appendChild(back)
 
 class Controls(GUI):
 	def __init__(self, window):
@@ -164,12 +164,12 @@ class Controls(GUI):
 		window.columnconfigure(0, weight = 3)
 		window.columnconfigure(1, weight = 2)
 
-		self.children.append(forwardLabel)
-		self.children.append(forward)
-		self.children.append(leftLabel)
-		self.children.append(left)
-		self.children.append(backwardLabel)
-		self.children.append(backward)
-		self.children.append(rightLabel)
-		self.children.append(right)
-		self.children.append(back)
+		self.appendChild(forwardLabel)
+		self.appendChild(forward)
+		self.appendChild(leftLabel)
+		self.appendChild(left)
+		self.appendChild(backwardLabel)
+		self.appendChild(backward)
+		self.appendChild(rightLabel)
+		self.appendChild(right)
+		self.appendChild(back)
