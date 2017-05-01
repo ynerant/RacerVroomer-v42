@@ -3,7 +3,7 @@
 import tkinter as tk
 import messages as msgs
 from guis import GUI, back, game
-import cars, maps
+import cars, maps, utils
 from PIL import Image
 
 class GameBuilder:
@@ -24,8 +24,7 @@ class GameBuilder:
 		self.mode = mode
 
 	def start(self, window):
-		global CURRENT_GAME_BUILDER
-		CURRENT_GAME_BUILDER = None
+		GameBuilder.CURRENT_GAME_BUILDER = None
 		game.Game(window, self)
 
 class CarChooser(GUI):
@@ -53,7 +52,7 @@ class CarChooser(GUI):
 			sizeLabel.grid(row = 5 * i + 2, column = 2)
 			maniabilityLabel = tk.Label(window, textvariable = msgs.MANIABILITY.format(car.maniability), font = ("Plantagenet Cherokee", 16))
 			maniabilityLabel.grid(row = 5 * i + 3, column = 2)
-			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg="#f8a1a1", font = ("Plantagenet Cherokee", 22))
+			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = 5 * i, column = 3, rowspan = 4)
 
 			if self.builder.car == car:
@@ -82,7 +81,7 @@ class CarChooser(GUI):
 		window.columnconfigure(3, weight = 2)
 		window.columnconfigure(4, weight = 1)
 
-		backBtn = tk.Button(window, textvariable = msgs.BACK, bg="#f8a1a1", font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 5 + 1, column = 0, columnspan = 4, pady = 100)
 		self.children.append(backBtn)
 
@@ -111,7 +110,7 @@ class MapChooser(GUI):
 			label.grid(row = i, column = 1, rowspan = 1)
 			sizeLabel = tk.Label(window, textvariable = msgs.SIZE.format(map.width, map.height), font = ("Plantagenet Cherokee", 22))
 			sizeLabel.grid(row = i, column = 2)
-			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg="#f8a1a1", font = ("Plantagenet Cherokee", 22))
+			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = i, column = 3, rowspan = 1)
 
 			if self.builder.map == map:
@@ -132,7 +131,7 @@ class MapChooser(GUI):
 		window.columnconfigure(3, weight = 2)
 		window.columnconfigure(4, weight = 1)
 
-		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg="#f8a1a1", anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg = utils.BUTTON_BACKGROUND, anchor = "center", width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 2 + 1, column = 0, columnspan = 5, pady = 100)
 		self.children.append(backBtn)
 

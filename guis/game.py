@@ -4,7 +4,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from guis import GUI, mainMenu
 
-import cars
+import cars, utils
 import messages as msgs
 from audio import AudioPlayer
 import math
@@ -14,6 +14,7 @@ class Game(GUI):
 	def __init__(self, window, builder):
 		GUI.__init__(self)
 
+		self.window = window
 		self.raw_car = builder.car
 		self.map = builder.map
 
@@ -37,7 +38,7 @@ class Game(GUI):
 		self.children.append(self.time_label)
 
 		self.lap = 0
-		self.lap_label = tk.Label(window, text = msgs.LAP.get().format(self.lap, self.map.max_laps), font = ("Plantagenet Cherokee", 24), fg = "white", bg = "black")
+		self.lap_label = tk.Label(window, text = msgs.LAP_NUMBER.get().format(self.lap, self.map.max_laps), font = ("Plantagenet Cherokee", 24), fg ="white", bg ="black")
 		self.lap_label.place(x = 0, y = self.time_label.winfo_reqheight(), width = self.time_label.winfo_reqwidth())
 		self.children.append(self.lap_label)
 
@@ -47,7 +48,7 @@ class Game(GUI):
 		self.children.append(self.canvas)
 
 	def on_resize(self, event):
-		if self.car.paused:
+		if self.car.paused or self.car.thread.stopped:
 			return
 
 		self.width, self.height = event.width, event.height
@@ -92,6 +93,7 @@ class Car:
 
 		self.keys_pressed = set()
 		self.paused = False
+		self.lap_times = []
 
 		self.thread = CarThread(self)
 		self.thread.start()
@@ -119,7 +121,7 @@ class Car:
 			self.keys_pressed.remove(event.keysym.upper())
 
 	def pause(self):
-		if self.paused:
+		if self.paused or self.thread.stopped:
 			return
 		self.keys_pressed.clear()
 		self.paused = True
@@ -129,7 +131,10 @@ class Car:
 
 		def resume():
 			self.paused = False
-			canvas.delete(rectangle)
+			try:
+				canvas.delete(rectangle)
+			except:
+				pass
 			if resumeButton in self.game.children:
 				self.game.children.remove(resumeButton)
 			if quitButton in self.game.children:
@@ -143,15 +148,15 @@ class Car:
 			self.paused = False
 			mainMenu.MainMenu(self.window)
 
-		resumeButton = tk.Button(self.window, textvariable = msgs.RESUME, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = resume)
-		quitButton = tk.Button(self.window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg="#f8a1a1", relief = "groove", command = quitGame)
+		resumeButton = tk.Button(self.window, textvariable = msgs.RESUME, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg = utils.BUTTON_BACKGROUND, relief = "groove", command = resume)
+		quitButton = tk.Button(self.window, textvariable = msgs.MAIN_MENU, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 10, bg = utils.BUTTON_BACKGROUND, relief = "groove", command = quitGame)
 
 		fc = lambda event : resume()
 		resumeId = self.window.bind("<KeyRelease-Escape>", fc)
 
 		width, height = self.game.width, self.game.height
-		resumeButton.place(x = width / 3, y = height / 4)
-		quitButton.place(x = width / 3, y = height / 2)
+		resumeButton.place(x = (width - resumeButton.winfo_reqwidth()) / 2, y = height / 4)
+		quitButton.place(x = (width - quitButton.winfo_reqwidth()) / 2, y = height / 2)
 
 		self.game.children.append(resumeButton)
 		self.game.children.append(quitButton)
@@ -159,11 +164,11 @@ class Car:
 	def forward(self):
 		self.speed = min(self.speed + self.car.acceleration, float(self.car.max_speed))
 
-		if self.speed >= self.car.max_speed / 2:
+		if self.speed >= min(self.car.max_speed / 2, 10):
 			AudioPlayer.playSound(AudioPlayer.DRIVING)
 
 	def backward(self):
-		self.speed = max(self.speed - self.car.acceleration, float(-self.car.max_speed))
+		self.speed = max(self.speed - self.car.acceleration, float(-self.car.max_speed / 2))
 
 	def left(self):
 		self.angle -= math.pi / self.angle_division
@@ -213,9 +218,6 @@ class CarThread(Thread):
 
 			from utils import CONTROLS
 			for key in set(car.keys_pressed):
-				if car.game.time == -1:
-					car.game.time = 0
-
 				if key == CONTROLS["forward"]:
 					car.forward()
 				elif key == CONTROLS["backward"]:
@@ -224,6 +226,11 @@ class CarThread(Thread):
 					car.left()
 				elif key == CONTROLS["right"]:
 					car.right()
+				else:
+					continue
+
+				if car.game.time == -1:
+					car.game.time = 0
 
 			newX = car.x + car.speed * car.vector[0] / 60.0
 			newY = car.y + car.speed * car.vector[1] / 60.0
@@ -252,21 +259,14 @@ class CarThread(Thread):
 
 			car.x = newX
 			car.y = newY
-			car.speed *= 0.99
+			if CONTROLS["forward"] not in car.keys_pressed and CONTROLS["backward"] not in car.keys_pressed:
+				car.speed *= 0.99
 			car.canvas.coords(car.img, car.game.width / car.game.map.width * car.x, car.game.height / car.game.map.height * car.y)
 			time.sleep(1.0 / 60.0)
 
 			if car.game.time >= 0:
 				car.game.time += 1.0 / 60.0
-				t = car.game.time
-				hours = int(t // 3600)
-				t %= 3600
-				minutes = int(t // 60)
-				t %= 60
-				seconds = int(t)
-				t %= 1
-				t = int(1000 * t)
-				car.game.time_label.config(text = str(hours).zfill(2) + ":" + str(minutes).zfill(2) + ":" + str(seconds).zfill(2) + "." + str(t).zfill(3))
+				car.game.time_label.config(text = formatTime(car.game.time))
 
 			wall = car.game.map.start
 			dot_product = (wall.x_end - wall.x_start) * (newX - wall.x_start) + (wall.y_end - wall.y_start) * (newY - wall.y_start)
@@ -283,5 +283,51 @@ class CarThread(Thread):
 					continue
 				self.last_passage = time.time()
 				self.last_passage_dir = direction
+
+				if car.game.lap > len(car.lap_times):
+					total_last_time = 0
+					if car.game.lap >= 1:
+						for lap in range(car.game.lap - 1):
+							total_last_time += car.lap_times[lap]
+					car.lap_times.append(car.game.time - total_last_time)
+
+				if car.game.lap == car.game.map.max_laps:
+					self.stopped = True
+					self.end()
+					return
+
 				car.game.lap += direction
-				car.game.lap_label.config(text = msgs.LAP.get().format(car.game.lap, car.game.map.max_laps))
+				car.game.lap_label.config(text = msgs.LAP_NUMBER.get().format(car.game.lap, car.game.map.max_laps))
+
+	def end(self):
+		car = self.car #type: Car
+		canvas = car.canvas #type: tk.Canvas
+		canvas.create_rectangle(0, 0, car.game.width, car.game.height, fill = "#F0F0F0", stipple = "gray50")
+		canvas.create_text(car.game.window.winfo_reqwidth() / 2, car.game.window.winfo_reqheight() / 5, text = msgs.YOU_WIN.get().format(formatTime(car.game.time)), font = ("Plantagenet Cherokee", 26))
+		quitButton = tk.Button(car.game.window, textvariable = msgs.MAIN_MENU, font = ("Plantagenet Cherokee", 26), bg = utils.BUTTON_BACKGROUND, command = lambda : mainMenu.MainMenu(car.game.window))
+		lap_times = tk.Frame(car.game.window, borderwidth = 2, relief = tk.GROOVE)
+		lap_label = tk.Label(lap_times, textvariable = msgs.LAP, font = ("Plantagenet Cherokee", 22, "bold"), width = 5)
+		time_label = tk.Label(lap_times, textvariable = msgs.TIME, font = ("Plantagenet Cherokee", 22, "bold"), width = 8)
+		lap_label.grid(row = 0, column = 0)
+		time_label.grid(row = 0, column = 1)
+		for lap in range(car.game.map.max_laps):
+			lap_number = tk.Label(lap_times, text = str(lap + 1), font = ("Plantagenet Cherokee", 18))
+			lap_time = tk.Label(lap_times, text = formatTime(car.lap_times[lap]), font = ("Plantagenet Cherokee", 18))
+			lap_number.grid(row = lap + 1, column = 0)
+			lap_time.grid(row = lap + 1, column = 1)
+
+		quitButton.place(x = (car.game.window.winfo_reqwidth() - quitButton.winfo_reqwidth()) / 2, y = (car.game.window.winfo_reqheight() - quitButton.winfo_reqheight()) / 2)
+		lap_times.place(x = car.game.window.winfo_reqwidth() - lap_times.winfo_reqwidth(), y = car.game.window.winfo_reqheight() / 5)
+
+		car.game.children.append(quitButton)
+		car.game.children.append(lap_times)
+
+def formatTime(t: float):
+	hours = int(t // 3600)
+	t %= 3600
+	minutes = int(t // 60)
+	t %= 60
+	seconds = int(t)
+	t %= 1
+	millis = int(1000 * t)
+	return str(hours).zfill(2) + ":" + str(minutes).zfill(2) + ":" + str(seconds).zfill(2) + "." + str(millis).zfill(3)
