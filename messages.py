@@ -2,9 +2,14 @@
 from tkinter import StringVar
 import locale
 from guis import settings
+import utils
 
-if locale.getlocale(locale.LC_ALL) == (None, None):
-	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale()[0][:2])
+if utils.isWindows():
+	if locale.getlocale(locale.LC_ALL) == (None, None):
+		locale.setlocale(locale.LC_ALL, locale.getdefaultlocale()[0][:2])
+else:
+	if locale.getlocale(locale.LC_CTYPE) == (None, None):
+		locale.setlocale(locale.LC_CTYPE, locale.getdefaultlocale()[0][:2])
 
 LOCALE = StringVar(value = locale.getlocale()[0][:2])
 if LOCALE.get() != "fr" and LOCALE.get() != "en":
@@ -52,7 +57,6 @@ class MSG(StringVar):
 		else:
 			obj.set(obj.en)
 		return obj
-
 
 def isEnglish():
 	return LOCALE.get() == "en"

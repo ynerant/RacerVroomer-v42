@@ -1,6 +1,36 @@
 #coding: utf-8
 
-import tkinter as tk
+import sys
+
+# Version inspection (only run with Python 3.0+)
+if sys.version_info < (3, 0):
+	print("This game can only run with Python 3.0+.")
+	print("Ce jeu ne peut seulement tourner sous Python 3.0 ou une version supérieure.")
+	exit(1)
+
+# Dependencies inspection
+try:
+	import tkinter as tk
+except:
+	print("It seems you don't have tkinter installed on your machine. Please install it before running.")
+	print("On dirait que tkinter n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
+	exit(1)
+
+import utils
+
+try:
+	import pygame
+except:
+	utils.showMessageDialog("Pygame not installed / Pygame non-installé", "It seems you don't have pygame installed on your machine. Please install it before running.\n" +
+			"On dirait que pygame n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
+	exit(1)
+
+try:
+	import PIL
+except:
+	utils.showMessageDialog("PIL not installed / PIL non-installé", "It seems you don't have PIL installed on your machine. Please install it before running.\n" +
+			"On dirait que PIL n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
+	exit(1)
 
 # Initialize the window
 # It is necessary to  create the window before anything, because when classes are imported, it mays load some window components
@@ -21,7 +51,10 @@ def main():
 	window = tk._default_root #type: tk.Tk
 	window.title("Racer Vroomer v42")
 	# Maximize the window
-	window.state("zoomed")
+	if utils.isWindows():
+		window.state("zoomed")
+	else:
+		window.attributes("-zoomed", True)
 	width = 840
 	height = 420
 	# Placing window at the center of the screen (when not maximized)
