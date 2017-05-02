@@ -107,7 +107,7 @@ class CarChooser(GUI):
 			sizeLabel = tk.Label(frame, textvariable = msgs.SIZE.format(car.width, car.height), font = ("Plantagenet Cherokee", 16))
 			sizeLabel.grid(row = 5 * i + 2, column = 2)
 			# Affichage de la maniabilité de la voiture (présenté comme unité arbitraire sans réellement en être une)
-			maniabilityLabel = tk.Label(frame, textvariable = msgs.MANIABILITY.format(car.maniability), font = ("Plantagenet Cherokee", 16))
+			maniabilityLabel = tk.Label(frame, textvariable = msgs.MANIABILITY.format(2 * car.maniability), font = ("Plantagenet Cherokee", 16))
 			maniabilityLabel.grid(row = 5 * i + 3, column = 2)
 			# Affichage du bouton de sélection
 			choose = tk.Button(frame, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
@@ -153,7 +153,8 @@ class CarChooser(GUI):
 
 		# Mise à jour de la zone de scroll lorsque le cadre est redimensionné
 		# En apparence mystérieusement non fonctionnel
-		def _configure_frame(event):
+		# noinspection PyUnusedLocal
+		def _configure_frame(eventf):
 			size = (frame.winfo_reqwidth(), frame.winfo_reqheight())
 			canvas.config(scrollregion = "0 0 %s %s" % size)
 		frame.bind("<Configure>", _configure_frame)

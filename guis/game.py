@@ -24,7 +24,7 @@ class Game(GUI):
 		self.map = builder.map
 
 		# Création du canevas à la taille de la fenêtre
-		self.width, self.height = window.winfo_reqwidth(), window.winfo_reqheight()
+		self.width, self.height = window.winfo_width(), window.winfo_height()
 		if window.state() == "zoomed":
 			self.width, self.height = window.winfo_screenwidth(), window.winfo_screenheight()
 		self.canvas = tk.Canvas(window, width = window.winfo_screenwidth(), height = window.winfo_screenheight(), bg = "green")
@@ -65,7 +65,7 @@ class Game(GUI):
 		self.appendChild(self.canvas)
 
 		# Actualisation de la fenêtre
-		window.config(width = window.winfo_reqwidth())
+		window.config(width = window.winfo_width())
 
 	def on_resize(self, event):
 		"""
@@ -86,8 +86,15 @@ class Game(GUI):
 		self.background = self.canvas.create_image(self.width, self.height, image = self.background_img)
 		# Positionnement de l’image
 		self.canvas.coords(self.background, self.width / 2, self.height / 2)
-		# Remontée de la voiture au-dessus du fond de carte
-		self.canvas.tag_raise(self.car.img)
+		# Redimensionnement de la voiture
+		img_temp = Image.open("images/cars/" + self.car.car.img_file)
+		img_temp = img_temp.convert("RGBA")
+		img_temp = img_temp.resize((int(self.car.car.width * self.width / self.map.width),
+									int(self.car.car.height * self.height / self.map.height)), Image.ANTIALIAS)
+		img_temp = img_temp.rotate(-self.car.angle * 180 / math.pi, expand = 1)
+		self.car.img_img = ImageTk.PhotoImage(img_temp)
+		self.canvas.delete(self.car.img)
+		self.car.img = self.canvas.create_image(self.width / self.map.width * self.car.x, self.height / self.map.height * self.car.y, image = self.car.img_img)
 
 class Car:
 	def __init__(self, window, game):
@@ -126,10 +133,11 @@ class Car:
 		# Lecture de l’image de la voiture, redimensionnement et placement sur l’interface
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
-		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
+		img_temp = img_temp.resize((int(self.car.width * self.window.winfo_width() / self.game.map.width),
+									int(self.car.height * self.window.winfo_height() / self.game.map.height)), Image.ANTIALIAS)
 		img_temp = img_temp.rotate(-self.angle * 180 / math.pi, expand = 1)
 		self.img_img = ImageTk.PhotoImage(img_temp)
-		self.img = self.canvas.create_image(0, 0, image = self.img_img)
+		self.img = self.canvas.create_image(self.x, self.y, image = self.img_img)
 
 		# keys_pressed représente l’ensemble des touches sur lesquelles l’utilisateur appuie actuellement
 		self.keys_pressed = set()
@@ -280,7 +288,8 @@ class Car:
 		# Actualisation et rotation de l’image de la voiture
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
-		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
+		img_temp = img_temp.resize((int(self.car.width * self.window.winfo_width() / self.game.map.width),
+									int(self.car.height * self.window.winfo_height() / self.game.map.height)), Image.ANTIALIAS)
 		img_temp = img_temp.rotate(-self.angle * 180 / math.pi, expand = 1)
 		self.img_img = ImageTk.PhotoImage(img_temp)
 		self.canvas.delete(self.img)
@@ -300,7 +309,8 @@ class Car:
 		# Actualisation et rotation de l’image de la voiture
 		img_temp = Image.open("images/cars/" + self.car.img_file)
 		img_temp = img_temp.convert("RGBA")
-		img_temp = img_temp.resize((self.car.width, self.car.height), Image.ANTIALIAS)
+		img_temp = img_temp.resize((int(self.car.width * self.window.winfo_width() / self.game.map.width),
+									int(self.car.height * self.window.winfo_height() / self.game.map.height)), Image.ANTIALIAS)
 		img_temp = img_temp.rotate(-self.angle * 180 / math.pi, expand = 1)
 		self.img_img = ImageTk.PhotoImage(img_temp)
 		self.canvas.delete(self.img)
@@ -368,17 +378,19 @@ class CarThread(Thread):
 				if xH < min(wall.x_start, wall.x_end) or xH > max(wall.x_start, wall.x_end) or yH < min(wall.y_start, wall.y_end) or yH > max(wall.y_start, wall.y_end):
 					continue
 
-				diagonal = math.sqrt(car.car.width ** 2 + car.car.height ** 2) / 2
-				if math.sqrt((xH - newX) ** 2 + (yH - newY) ** 2) < diagonal + 0.1:
+				# Calcul du carré de la diagonale divisée par sqrt(2)
+				diagonal_squared = (car.car.width ** 2 + car.car.height ** 2) / 8
+				# Calcul de la distance mur-voiture et déclenchement éventuel de la collision
+				if (xH - newX) ** 2 + (yH - newY) ** 2 < diagonal_squared :
 					collision = True
 					break
 
 			# En cas de collision, le son de collision est déclenché, et la voiture est propulsée en arrière
 			if collision:
 				AudioPlayer.playSound(AudioPlayer.COLLISION, bypass = True)
-				car.x = car.x - car.speed * car.vector[0] / 10.0
-				car.y = car.y - car.speed * car.vector[1] / 10.0
-				car.speed = -car.speed
+				car.x = car.x - car.speed * car.vector[0] / 20.0
+				car.y = car.y - car.speed * car.vector[1] / 20.0
+				car.speed = -car.speed / 2
 				# Attente d’1/60 seconde et avancement du chronomètre
 				time.sleep(1.0 / 60.0)
 				car.game.time += 1.0 / 60.0
@@ -461,12 +473,12 @@ class CarThread(Thread):
 
 		# Affichage du même rectangle blanc que le menu pause
 		canvas.create_rectangle(0, 0, car.game.width, car.game.height, fill = "#F0F0F0", stipple = "gray50")
-		canvas.create_text(car.game.window.winfo_reqwidth() / 2, car.game.window.winfo_reqheight() / 5, text = msgs.YOU_WIN.get().format(formatTime(car.game.time)), font = ("Plantagenet Cherokee", 26))
+		canvas.create_text(car.game.window.winfo_width() / 2, car.game.window.winfo_height() / 5, text = msgs.YOU_WIN.get().format(formatTime(car.game.time)), font = ("Plantagenet Cherokee", 26))
 		# Si le joueur a battu le record précédent, on lui indique, sinon on lui dit quel est le record à battre
 		if score is highScore:
-			canvas.create_text(car.game.window.winfo_reqwidth() / 2, car.game.window.winfo_reqheight() / 5 + 42, text = msgs.NEW_HIGH_SCORE.get(), font = ("Plantagenet Cherokee", 26))
+			canvas.create_text(car.game.window.winfo_width() / 2, car.game.window.winfo_height() / 5 + 42, text = msgs.NEW_HIGH_SCORE.get(), font = ("Plantagenet Cherokee", 26))
 		else:
-			canvas.create_text(car.game.window.winfo_reqwidth() / 2, car.game.window.winfo_reqheight() / 5 + 42, text = msgs.HIGH_SCORE.get().format(highScore.total_time), font = ("Plantagenet Cherokee", 26))
+			canvas.create_text(car.game.window.winfo_width() / 2, car.game.window.winfo_height() / 5 + 42, text = msgs.HIGH_SCORE.get().format(highScore.total_time), font = ("Plantagenet Cherokee", 26))
 		# Création du bouton de retour au menu principal
 		quitButton = tk.Button(car.game.window, textvariable = msgs.MAIN_MENU, font = ("Plantagenet Cherokee", 26), bg = utils.BUTTON_BACKGROUND, command = lambda : mainMenu.MainMenu(car.game.window))
 		# Création d’un cadre d’affichage des temps par tour
@@ -484,8 +496,8 @@ class CarThread(Thread):
 			lap_time.grid(row = lap + 1, column = 1)
 
 		# Positionnement du bouton pour quitter ainsi que les temps effectués
-		quitButton.place(x = (car.game.window.winfo_reqwidth() - quitButton.winfo_reqwidth()) / 2, y = (car.game.window.winfo_reqheight() - quitButton.winfo_reqheight()) / 2)
-		lap_times.place(x = car.game.window.winfo_reqwidth() - lap_times.winfo_reqwidth(), y = car.game.window.winfo_reqheight() / 5)
+		quitButton.place(x = (car.game.window.winfo_width() - quitButton.winfo_reqwidth()) / 2, y = (car.game.window.winfo_height() - quitButton.winfo_reqheight()) / 2)
+		lap_times.place(x = car.game.window.winfo_width() - lap_times.winfo_reqwidth(), y = car.game.window.winfo_height() / 5)
 
 		# Ajout des enfants
 		car.game.appendChild(quitButton)
