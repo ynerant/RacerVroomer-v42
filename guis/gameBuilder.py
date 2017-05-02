@@ -12,7 +12,7 @@ class GameBuilder:
 	class Mode:
 		def __init__(self, singleplayer):
 			"""
-			Constructeur par défaut d'un mode de jeu
+			Constructeur par défaut d’un mode de jeu
 			Deux modes existent : un joueur et multijoueur
 			"""
 			self.sp = singleplayer
@@ -24,7 +24,7 @@ class GameBuilder:
 
 	def __init__(self, mode : Mode):
 		"""
-		Constructeur par défaut d'un constructeur de partie
+		Constructeur par défaut d’un constructeur de partie
 		Prend comme argument le mode de jeu précédemment défini
 		"""
 		self.car = None
@@ -34,7 +34,7 @@ class GameBuilder:
 	def start(self, window):
 		"""
 		Démarre la partie et détruit le constructeur
-		N'est possible seulement si une voiture et une carte ont été choisies
+		N’est possible seulement si une voiture et une carte ont été choisies
 		"""
 		GameBuilder.CURRENT_GAME_BUILDER = None
 		game.Game(window, self)
@@ -75,22 +75,22 @@ class CarChooser(GUI):
 		canvas.xview_moveto(0)
 		canvas.yview_moveto(0)
 
-		# Définition de l'action des barres de défilement (déplacer le canevas)
+		# Définition de l’action des barres de défilement (déplacer le canevas)
 		vscrollbar.config(command = canvas.yview)
 		hscrollbar.config(command = canvas.xview)
 
 		for i in range(len(cars.CARS)):
-			# Pour chaque voiture, affichae d'une ligne d'informations
+			# Pour chaque voiture, affichae d’une ligne d’informations
 			car = cars.CARS[i]
-			# Chargement de l'image de miniature grâce au module PIL
+			# Chargement de l’image de miniature grâce au module PIL
 			image = Image.open("images/thumbnails/" + car.thumbnail_file)
-			# Redimensionnement de l'image en 100x100 avec anti-crénelage
+			# Redimensionnement de l’image en 100x100 avec anti-crénelage
 			image = image.resize((100, 100), Image.ANTIALIAS)
-			# Remplacement de l'image
+			# Remplacement de l’image
 			image.save("images/thumbnails/" + car.thumbnail_file, car.thumbnail_file[-3:])
-			# Conversion de l'image en Tkinter
+			# Conversion de l’image en Tkinter
 			thumbnail = tk.PhotoImage(file = "images/thumbnails/" + car.thumbnail_file)
-			# Passage de l'image en Label et placement dans l'interface
+			# Passage de l’image en Label et placement dans l’interface
 			thumbnailLabel = tk.Label(frame, image = thumbnail)
 			thumbnailLabel.image = thumbnail
 			thumbnailLabel.grid(row = 5 * i, column = 0, rowspan = 4)
@@ -100,7 +100,7 @@ class CarChooser(GUI):
 			# Affichage de la vitesse de la voiture
 			speedLabel = tk.Label(frame, textvariable = msgs.MAX_SPEED.format(car.max_speed), font = ("Plantagenet Cherokee", 16))
 			speedLabel.grid(row = 5 * i, column = 2)
-			# Affichage de la capacité d'accélération de la voiture
+			# Affichage de la capacité d’accélération de la voiture
 			accelerateLabel = tk.Label(frame, textvariable = msgs.ACCELERATION.format(60 * car.acceleration), font = ("Plantagenet Cherokee", 16))
 			accelerateLabel.grid(row = 5 * i + 1, column = 2)
 			# Affichage de la taille de la voiture
@@ -113,19 +113,19 @@ class CarChooser(GUI):
 			choose = tk.Button(frame, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = 5 * i, column = 3, rowspan = 4)
 
-			# Si la voiture a déjà été choisie (pour modification), affichage d'un check à côté
+			# Si la voiture a déjà été choisie (pour modification), affichage d’un check à côté
 			if self.builder.car == car:
 				ok = tk.Label(frame, text = "ü", font = ("Wingdings", 42))
 				ok.grid(row = 5 * i, column = 4, rowspan = 4)
 				self.appendChild(ok)
 
-			# Si ce n'est pas la dernière voiture, affichage d'une ligne grisée
+			# Si ce n’est pas la dernière voiture, affichage d’une ligne grisée
 			if i < len(cars.CARS) - 1:
 				canvas = tk.Canvas(frame, width = window.winfo_screenwidth(), height = 5, bg = "lightgray")
 				canvas.grid(row = 5 * i + 4, columnspan = 4)
 				self.appendChild(canvas)
 
-			# Inscription de l'écouteur pour le click du bouton de sélection
+			# Inscription de l’écouteur pour le click du bouton de sélection
 			self.registerChooseListener(window, choose, car)
 
 			# Ajout de tous les composants comme enfants
@@ -156,10 +156,9 @@ class CarChooser(GUI):
 		def _configure_frame(event):
 			size = (frame.winfo_reqwidth(), frame.winfo_reqheight())
 			canvas.config(scrollregion = "0 0 %s %s" % size)
-			print(canvas.config("scrollregion"))
-		frame.bind('<Configure>', _configure_frame)
+		frame.bind("<Configure>", _configure_frame)
 
-	# Lorsqu'un clic est réalisé, retour au menu précédent et affectation au constructeur de la voiture
+	# Lorsqu’un clic est réalisé, retour au menu précédent et affectation au constructeur de la voiture
 	def registerChooseListener(self, window, button, car):
 		def choose_car():
 			self.builder.car = car
@@ -177,17 +176,17 @@ class MapChooser(GUI):
 		self.builder = gameBuilder
 
 		for i in range(len(maps.MAPS)):
-			# Pour chaque carte, affiche une ligne d'informations et de sélection
+			# Pour chaque carte, affiche une ligne d’informations et de sélection
 			map = maps.MAPS[i]
-			# Lecture de l'image de miniature grâce au module PIL
+			# Lecture de l’image de miniature grâce au module PIL
 			image = Image.open("images/thumbnails/" + map.thumbnail)
-			# Redimensionnement de l'image en 100x100 avec anti-crénelage
+			# Redimensionnement de l’image en 100x100 avec anti-crénelage
 			image = image.resize((100, 100), Image.ANTIALIAS)
-			# Remplacement de l'ancien fichier
+			# Remplacement de l’ancien fichier
 			image.save("images/thumbnails/" + map.thumbnail, map.thumbnail[-3:])
-			# Conversion de l'image en image Tkinter
+			# Conversion de l’image en image Tkinter
 			thumbnail = tk.PhotoImage(file = "images/thumbnails/" + map.thumbnail)
-			# Placement de l'image dans un label et positionnement dans l'interface
+			# Placement de l’image dans un label et positionnement dans l’interface
 			thumbnailLabel = tk.Label(window, image = thumbnail)
 			thumbnailLabel.image = thumbnail
 			thumbnailLabel.grid(row = i, column = 0, rowspan = 1)
@@ -201,13 +200,13 @@ class MapChooser(GUI):
 			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = i, column = 3, rowspan = 1)
 
-			# Si une carte était déjà sélectionné, affichage d'un check à côté
+			# Si une carte était déjà sélectionné, affichage d’un check à côté
 			if self.builder.map == map:
 				ok = tk.Label(window, text = "ü", font = ("Wingdings", 42))
 				ok.grid(row = i, column = 4, rowspan = 1)
 				self.appendChild(ok)
 
-			# Inscription de l'écouteur pour le clic du bouton
+			# Inscription de l’écouteur pour le clic du bouton
 			self.registerChooseListener(window, choose, map)
 
 			# Ajout des enfants

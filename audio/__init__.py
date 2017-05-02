@@ -31,7 +31,7 @@ class AudioPlayer(Thread):
 		Boucle de lecture
 		"""
 		while True:
-			# Si la musique n'est pas lancée et que la musique est activée (équivalent à un appui du bouton du menu d'options délayé), lance la musique en boucle
+			# Si la musique n’est pas lancée et que la musique est activée (équivalent à un appui du bouton du menu d’options délayé), lance la musique en boucle
 			if not self.music_state and self.window.music_enabled:
 				self.MUSIC.play(loops = -1)
 				self.music_state = True
@@ -46,10 +46,10 @@ class AudioPlayer(Thread):
 	@staticmethod
 	def playSound(sound, loops = 0, bypass = False):
 		"""
-		Lecture d'un son
-		Argument loops : Nombre de répétitions supplémentaires (-1 équivalent à l'infini)
-		Argument bypass : Si le son est déjà lancé et que bypass vaut True, le son va s'interrompre et recommencer
+		Lecture d’un son
+		Argument loops : Nombre de répétitions supplémentaires (-1 équivalent à l’infini)
+		Argument bypass : Si le son est déjà lancé et que bypass vaut True, le son va s’interrompre et recommencer
 		"""
-		# Si les effets sonores sont activés et si le son n'est pas déjà en lecture (si on décide d'attendre que le précédent soit terminé), on lance le son
+		# Si les effets sonores sont activés et si le son n’est pas déjà en lecture (si on décide d’attendre que le précédent soit terminé), on lance le son
 		if AudioPlayer.window.sounds_enabled and (bypass or AudioPlayer._channels[sound] is None or not AudioPlayer._channels[sound].get_busy()):
 			AudioPlayer._channels[sound] = sound.play(loops)

@@ -2,10 +2,9 @@
 
 import messages as msgs
 import json
-#import tkinter as tk
 
 # Liste de toutes les cartes disponibles
-MAPS = []
+MAPS = list()
 
 class Map :
 	def __init__(self, name : msgs.MSG, fileName):

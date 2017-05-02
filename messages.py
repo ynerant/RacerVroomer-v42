@@ -12,7 +12,7 @@ else:
 	if locale.getlocale(locale.LC_CTYPE) == (None, None):
 		locale.setlocale(locale.LC_CTYPE, locale.getdefaultlocale()[0][:2])
 
-# Affectation de la langue d'utilisation en fonction des paramètres ou du système d'exploitation (français ou anglais)
+# Affectation de la langue d’utilisation en fonction des paramètres ou du système d’exploitation (français ou anglais)
 LOCALE = StringVar(value = locale.getlocale()[0][:2])
 if LOCALE.get() != "fr" and LOCALE.get() != "en":
 	LOCALE.set("en")
@@ -21,20 +21,20 @@ LOCALE.trace_variable("w", lambda *args : settings.saveSettings())
 class MSG(StringVar):
 	def __init__(self, english_message : str, french_message : str):
 		"""
-		Constructeur d'un message localisé
+		Constructeur d’un message localisé
 		Le premier argument est le message en anglais, le second est en français
 		"""
 		super().__init__()
 		self.en = english_message
 		self.fr = french_message
 
-		# Si un des messages est vide, l'autre est choisi
+		# Si un des messages est vide, l’autre est choisi
 		if len(self.fr) == 0:
 			self.fr = self.en
 		if len(self.en) == 0:
 			self.en = self.fr
 
-		# Changement du message d'utilisation lorsque la langue est changée
+		# Changement du message d’utilisation lorsque la langue est changée
 		# noinspection PyUnusedLocal
 		def callback(*kwargs):
 			if isFrench():
@@ -48,15 +48,15 @@ class MSG(StringVar):
 
 	def clone(self):
 		"""
-		Clonage de l'objet
-		Chaque modification sur l'une des instances de changera pas l'autre (notamment utile en cas de formattage ou de switch)
+		Clonage de l’objet
+		Chaque modification sur l’une des instances de changera pas l’autre (notamment utile en cas de formattage ou de switch)
 		"""
 		return MSG(self.en, self.fr)
 
 	def switch(self, msg):
 		"""
-		Change les textes à partir d'un autre message
-		Utile pour changer le texte d'un bouton (notamment pour activer/désactiver les sons)
+		Change les textes à partir d’un autre message
+		Utile pour changer le texte d’un bouton (notamment pour activer/désactiver les sons)
 		"""
 		self.en = msg.en
 		self.fr = msg.fr
@@ -67,7 +67,7 @@ class MSG(StringVar):
 
 	def format(self, *args):
 		"""
-		Formatte le message à partir d'arguments
+		Formatte le message à partir d’arguments
 		"""
 		obj = self.clone()
 		obj.en = obj.en.format(*list(args))
@@ -93,7 +93,7 @@ def isFrench():
 
 def setEnglish():
 	"""
-	Changement de la langue vers l'anglais 
+	Changement de la langue vers l’anglais 
 	"""
 	LOCALE.set("en")
 
@@ -142,8 +142,11 @@ CHOOSE = MSG("Choose", "Choisir")
 RESUME = MSG("Resume", "Reprendre")
 LAP_NUMBER = MSG("Lap {}/{}", "Tour {}/{}")
 YOU_WIN = MSG("You win in {}!", "Vous avez gagné en {} !")
+HIGH_SCORE = MSG("High score: {}", "Record : {}")
+NEW_HIGH_SCORE = MSG("You got the new high score!", "Vous avez battu un nouveau record !")
 LAP = MSG("Lap", "Tour")
 TIME = MSG("Time", "Temps")
+TOTAL_TIME = MSG("Total time", "Temps total")
 LAP_TIME = MSG("Time lap #{}", "Temps tour #{}")
 CAR = MSG("Car", "Voiture")
 

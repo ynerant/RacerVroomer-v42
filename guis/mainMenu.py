@@ -11,7 +11,7 @@ from . import GUI, settings, scores, playerMode
 class MainMenu(GUI):
 	def __init__(self, window):
 		"""
-		Constructeur par défaut de l'interface du menu principal (Fond d'écran actif)
+		Constructeur par défaut de l’interface du menu principal (Fond d’écran actif)
 		Prend comme argument la fenêtre
 		"""
 		GUI.__init__(self, window, True)

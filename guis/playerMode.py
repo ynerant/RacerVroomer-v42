@@ -9,7 +9,7 @@ from guis.gameBuilder import CarChooser, MapChooser, GameBuilder
 class SinglePlayer(GUI):
 	def __init__(self, window):
 		"""
-		Constructeur par défaut de l'interface du menu un joueur
+		Constructeur par défaut de l’interface du menu un joueur
 		Prend comme argument la fenêtre
 		"""
 		GUI.__init__(self, window, True)
@@ -25,7 +25,7 @@ class SinglePlayer(GUI):
 		start = tk.Button(window, textvariable = msgs.START, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", state = tk.DISABLED if builder.car is None or builder.map is None else tk.NORMAL, command = lambda : builder.start(window))
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : back(window))
 
-		# Positionnement des boutons sur l'interface
+		# Positionnement des boutons sur l’interface
 		car.place(relx = .025, rely = .30)
 		chooseMap.place(relx = .025, rely = .42)
 		start.place(relx = .025, rely = .54)
@@ -40,10 +40,10 @@ class SinglePlayer(GUI):
 class MultiPlayer(GUI):
 	def __init__(self, window):
 		"""
-		Constructeur par défaut de l'interface du menu multijoueur
+		Constructeur par défaut de l’interface du menu multijoueur
 		Prend comme argument la fenêtre
 		
-		Ce menu n'est absolument pas encore travaillé et n'est là qu'en prévision
+		Ce menu n’est absolument pas encore travaillé et n’est là qu’en prévision
 		"""
 		GUI.__init__(self, window, True)
 
@@ -52,7 +52,7 @@ class MultiPlayer(GUI):
 		online = tk.Button(window, textvariable = msgs.ONLINE, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : utils.showMessageDialog(msgs.SOON, msgs.FUTURE_FEATURE))
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : back(window))
 
-		# Affichage et positionnement des boutons sur l'interface
+		# Affichage et positionnement des boutons sur l’interface
 		local.place(relx = .025, rely = .35)
 		online.place(relx = .025, rely = .47)
 		backBtn.place(relx = .74, rely = .88)

@@ -9,13 +9,13 @@ if sys.version_info < (3, 0):
 	exit(1)
 
 # Inspection des dépendances
-# Pour chaque module requis, si ce dernier n'est pas trouvé, un message compréhensif est adressé à l'utilisateur, à la place d'une erreur
-# Les modules sont : Tkinter (pour le graphique), pygame.mixer (pour le son), PIL (pour le traitement d'images)
+# Pour chaque module requis, si ce dernier n’est pas trouvé, un message compréhensif est adressé à l’utilisateur, à la place d’une erreur
+# Les modules sont : Tkinter (pour le graphique), pygame.mixer (pour le son), PIL (pour le traitement d’images)
 try:
 	import tkinter as tk
 except:
-	print("It seems you don't have tkinter installed on your machine. Please install it before running.")
-	print("On dirait que tkinter n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
+	print("It seems you don’t have tkinter installed on your machine. Please install it before running.")
+	print("On dirait que tkinter n’est pas installé sur votre machine. Merci de l’installer avant de lancer le jeu.")
 	exit(1)
 
 import utils
@@ -23,15 +23,15 @@ import utils
 try:
 	import pygame
 except:
-	utils.showMessageDialog("Pygame not installed / Pygame non-installé", "It seems you don't have pygame installed on your machine. Please install it before running.\n" +
-			"On dirait que pygame n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
+	utils.showMessageDialog("Pygame not installed / Pygame non-installé", "It seems you don’t have pygame installed on your machine. Please install it before running.\n" +
+			"On dirait que pygame n’est pas installé sur votre machine. Merci de l’installer avant de lancer le jeu.")
 	exit(1)
 
 try:
 	import PIL
 except:
-	utils.showMessageDialog("PIL not installed / PIL non-installé", "It seems you don't have PIL installed on your machine. Please install it before running.\n" +
-			"On dirait que PIL n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
+	utils.showMessageDialog("PIL not installed / PIL non-installé", "It seems you don’t have PIL installed on your machine. Please install it before running.\n" +
+			"On dirait que PIL n’est pas installé sur votre machine. Merci de l’installer avant de lancer le jeu.")
 	exit(1)
 
 # Initialise la fenêtre
@@ -53,17 +53,17 @@ def main():
 	window = tk._default_root #type: tk.Tk
 	# Affectation du titre
 	window.title("Racer Vroomer v42")
-	# Affectation de l'icône
+	# Affectation de l’icône
 	window.iconbitmap("icon.ico")
 	# Maximisation de la fenêtre
 	if utils.isWindows():
 		window.state("zoomed")
 	else:
 		window.attributes("-zoomed", True)
-	# Résolution de base de 840x420 lorsque la fenêtre n'est pas maximisée
+	# Résolution de base de 840x420 lorsque la fenêtre n’est pas maximisée
 	width = 840
 	height = 420
-	# Placement de la fenêtre au centre de l'écran (quand non-maximisée)
+	# Placement de la fenêtre au centre de l’écran (quand non-maximisée)
 	screenWidth = window.winfo_screenwidth()
 	screenHeight = window.winfo_screenheight()
 	window.geometry(str(width) + "x" + str(height) + "+" + str(int((screenWidth - width) / 2)) + "+" + str(int((screenHeight - height) / 2)))
