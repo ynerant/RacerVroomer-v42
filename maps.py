@@ -10,13 +10,12 @@ class Map :
 	def __init__(self, name : msgs.MSG, fileName):
 		"""
 		Constructeur par défaut des cartes
-		:param name: Name in-game of the map (localized)
-		:param fileName: Path relative to ./maps to find the JSON file containing map infos
+		Prend en paramètres le nom (localisé/traduit) de la carte ainsi que le fichier contenant toutes les informations
 		"""
 		self.name = name
 		self.fileName = fileName
 
-		# Loading JSON file
+		# Chargement du fichier JSON
 		try:
 			with open("maps/" + fileName, "r") as f:
 				jsoned = f.read()
@@ -24,24 +23,24 @@ class Map :
 			print("An error occured while loading the map called \"" + name.en + "\" with filename \"" + fileName + "\", map not loaded")
 			return
 
-		# Parsing the JSON file into a dictionnary
+		# Parcours du fichier JSON et conversion en un dictionnaire Python
 		obj = json.loads(jsoned) #type: dict
 
-		# Attributing all parameters (img file, thumbnail file, width, height, laps, start line and walls)
+		# Attribution de tous les paramètres (fichier d'image, de miniature, longueur, largeur, nombre de tours, ligne de départ et murs)
 		self.img_file = obj["img_file"]
 		self.thumbnail = obj["thumbnail"]
 		self.width = int(obj["width"])
 		self.height = int(obj["height"])
 		self.max_laps = int(obj["max_laps"])
-		# Start line is considered line a wall
-		# A wall is a line
+		# La ligne de départ peut être considérée comme un mur
+		# Un mur est une ligne faisant obsctacle à la voiture
 		self.start = Wall(obj["start"])
 		raw_walls = obj["walls"]
 		self.walls = []
 		for raw_wall in raw_walls:
 			self.walls.append(Wall(raw_wall))
 
-		# Appending MAPS
+		# Ajout à la liste MAPS
 		MAPS.append(self)
 
 	def __str__(self):
@@ -51,9 +50,9 @@ class Map :
 class Wall :
 	def __init__(self, args):
 		"""
-		Default wall constructor
-		:param args: list or tuple, which length is 4.
-		First value is the abscissa
+		Constructeur par défaut d'un mur
+		Prend en argument un tuple de taille 4 comprenant les coordonnées du mur
+		Ces coordonnées sont dans l'ordre l'abscisse de début, celle de fin, l'ordonnée de début et celle de fin
 		"""
 		self.x_start = int(args[0])
 		self.x_end = int(args[1])
@@ -61,6 +60,9 @@ class Wall :
 		self.y_end = int(args[3])
 
 	def length(self):
+		"""
+		Renvoie la taille du mur
+		"""
 		return ((self.x_end - self.x_start) ** 2 + (self.y_end - self.y_start) ** 2) ** 0.5
 
 	def __str__(self):
