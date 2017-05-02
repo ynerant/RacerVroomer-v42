@@ -168,6 +168,9 @@ ONLINE = MSG("Online", "En ligne")
 
 SOON = MSG("Soon!", "Bientôt !")
 FUTURE_FEATURE = MSG("This feature will (probably) be available later!", "Cette fonctionnalité sera (probablement) accessible plus tard !")
+FONT_ERROR = MSG("Font not found", "Police non trouvée")
+FONT_NOT_FOUND = MSG("The font \"Plantagenet Cherokee\" used in the game doesn't exist. Please install it manually with the joined file \"font.ttf\" to enjoy fully the game",
+					 		"La police « Plantagenet Cherokee » utilisée dans le jeu n'existe pas. Merci de l'installer manuellement à l'aide du fichier joint « font.ttf » afin de profiter pleinement du jeu")
 
 ##########################################################################
 ########################### Noms des voitures ############################
@@ -182,6 +185,5 @@ GREEN_CAR = MSG("E-Car", "E-Voiture")
 ############################ Noms des cartes #############################
 ##########################################################################
 
-BABY = MSG("Baby loop", "Circuit Baby")
-CIRCUIT_8 = MSG("8-Circuit", "Circuit en 8")
 TEST_LOOP = MSG("Test Loop", "Circuit de test")
+PHANTOM_LABYRINTH = MSG("Phantom labyrinth", "Labyrinthe fantôme")

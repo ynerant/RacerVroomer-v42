@@ -67,3 +67,4 @@ class Wall :
 		return "{Wall x=[" + str(self.x_start) + ", " + str(self.x_end) + "], y=[" + str(self.y_start) + ", " + str(self.y_end) + "]}"
 
 TEST_LOOP = Map(msgs.TEST_LOOP, "test_loop.map")
+PHANTOM_LABYRINTH = Map(msgs.PHANTOM_LABYRINTH, "phantom_labyrinth.map")

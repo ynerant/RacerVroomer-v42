@@ -176,7 +176,6 @@ class Car:
 
 		# La combinaison CTRL+SHIFT+F6 (ou CTRL+SHIFT+F7) affiche les collisions (déstiné au debug lors de la création de cartes)
 		# NB : 6x7 = 42
-		print(self.keys_pressed)
 		if ("CONTROL_L" in self.keys_pressed or "CONTROL_R" in self.keys_pressed) and ("SHIFT_L" in self.keys_pressed or "SHIFT_R" in self.keys_pressed)\
 				and ("F6" in self.keys_pressed or "F7" in self.keys_pressed):
 			for wall in self.game.map.walls:

@@ -13,6 +13,7 @@ if sys.version_info < (3, 0):
 # Les modules sont : Tkinter (pour le graphique), pygame.mixer (pour le son), PIL (pour le traitement d'images)
 try:
 	import tkinter as tk
+	import tkinter.font as font
 except:
 	print("It seems you don't have tkinter installed on your machine. Please install it before running.")
 	print("On dirait que tkinter n'est pas installé sur votre machine. Merci de l'installer avant de lancer le jeu.")
@@ -88,6 +89,11 @@ def main():
 
 	# Démarrage du processus audio, afin de ne pas interrompre le processus principal
 	audio.AudioPlayer(window).start()
+
+	# Vérification de l'installation de la police
+	if not "Plantagenet Cherokee" in font.families():
+		import messages as msgs
+		utils.showMessageDialog(msgs.FONT_ERROR, msgs.FONT_NOT_FOUND)
 
 	# Affichage de la fenêtre et démarrage de la boucle principale
 	window.mainloop()
