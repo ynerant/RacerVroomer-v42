@@ -67,6 +67,4 @@ class Wall :
 	def __str__(self):
 		return "{Wall x=[" + str(self.x_start) + ", " + str(self.x_end) + "], y=[" + str(self.y_start) + ", " + str(self.y_end) + "]}"
 
-BABY = Map(msgs.BABY, "baby.map")
-CIRCUIT_8 = Map(msgs.CIRCUIT_8, "8_circuit.map")
 TEST_LOOP = Map(msgs.TEST_LOOP, "test_loop.map")

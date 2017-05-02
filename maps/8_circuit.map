@@ -1,9 +1,0 @@
-{
-	"img_file": "8_circuit.png",
-	"thumbnail": "8_circuit_thumbnail.png",
-	"width": 1378,
-	"height": 892,
-	"max_laps": 3,
-	"start": [792, 799, 468, 513],
-	"walls": [[720, 951, 454, 455]]
-}

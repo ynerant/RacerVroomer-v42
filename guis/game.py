@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from PIL import Image, ImageTk
-from guis import GUI, mainMenu
+from guis import GUI, mainMenu, scores
 
 import cars, utils
 import messages as msgs
@@ -38,11 +38,10 @@ class Game(GUI):
 		# Conversion de l'image en image Tkinter
 		self.background_img = ImageTk.PhotoImage(img_temp)
 		# Création de l'image dans le canevas
-		self.background = self.canvas.create_image(self.width, self.height, image = self.background_img)
+		self.background = self.canvas.create_image(self.width, self.height, image = self.background_img, anchor = tk.NW)
 		# Affichage du canevas et positionnement
 		self.canvas.focus_set()
 		self.canvas.pack()
-		self.canvas.coords(self.background, self.width / 2, self.height / 2)
 		# Lorsque la fenêtre est reconfigurée redimensionnée, réduite, ...), invocation de la fonction on_resize(voir plus bas)
 		window.bind("<Configure>", lambda event : self.on_resize(event))
 
@@ -64,6 +63,9 @@ class Game(GUI):
 
 		# Ajout du canevas comme enfant
 		self.appendChild(self.canvas)
+
+		# Actualisation de la fenêtre
+		window.config(width = window.winfo_reqwidth())
 
 	def on_resize(self, event):
 		"""
@@ -195,6 +197,7 @@ class Car:
 		# Rectangle blanc quadrillé, donnant l'impression de transparence
 		rectangle = canvas.create_rectangle(0, 0, self.game.width, self.game.height, fill = "#F0F0F0", stipple = "gray50")
 
+		# noinspection PyProtectedMember
 		def resume():
 			"""
 			Fonction invoquée lorsque le bouton Reprendre est cliqué, reprenant alors la partie en cours 
@@ -207,10 +210,10 @@ class Car:
 			except:
 				pass
 			# Suppression des boutons des enfants
-			if resumeButton in self.game.children:
-				self.game.children.remove(resumeButton)
-			if quitButton in self.game.children:
-				self.game.children.remove(quitButton)
+			if resumeButton in self.game._children:
+				self.game._children.remove(resumeButton)
+			if quitButton in self.game._children:
+				self.game._children.remove(quitButton)
 			# Destruction des boutons
 			resumeButton.destroy()
 			quitButton.destroy()
@@ -372,7 +375,7 @@ class CarThread(Thread):
 
 			# En cas de collision, le son de collision est déclenché, et la voiture est propulsée en arrière
 			if collision:
-				AudioPlayer.playSound(AudioPlayer.COLLISION)
+				AudioPlayer.playSound(AudioPlayer.COLLISION, bypass = True)
 				car.x = car.x - car.speed * car.vector[0] / 10.0
 				car.y = car.y - car.speed * car.vector[1] / 10.0
 				car.speed = -car.speed
@@ -448,6 +451,13 @@ class CarThread(Thread):
 		"""
 		car = self.car #type: Car
 		canvas = car.canvas #type: tk.Canvas
+
+		# Sauvegarde du score
+		laps_time_str = list()
+		for lap_time in car.lap_times:
+			laps_time_str.append(formatTime(lap_time))
+		score = scores.Score(car.car, car.game.map, laps_time_str, formatTime(car.game.time), car.game.time)
+
 		# Affichage du même rectangle blanc que le menu pause
 		canvas.create_rectangle(0, 0, car.game.width, car.game.height, fill = "#F0F0F0", stipple = "gray50")
 		canvas.create_text(car.game.window.winfo_reqwidth() / 2, car.game.window.winfo_reqheight() / 5, text = msgs.YOU_WIN.get().format(formatTime(car.game.time)), font = ("Plantagenet Cherokee", 26))

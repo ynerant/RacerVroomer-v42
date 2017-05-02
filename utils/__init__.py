@@ -6,6 +6,8 @@ import sys
 # Dictionnaire des contrôles
 # Au contrôle est affecté la touche
 CONTROLS = dict(forward = 'Z', left = 'Q', backward = 'S', right = 'D')
+# Liste des scores
+SCORES = list()
 # Couleur de fond des boutons
 BUTTON_BACKGROUND = "#f8a1a1"
 

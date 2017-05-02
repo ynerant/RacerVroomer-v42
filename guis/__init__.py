@@ -10,7 +10,7 @@ CURRENT_GUI = None
 OLD_GUIS = []
 
 class GUI:
-	def __init__(self, window, bg = False):
+	def __init__(self, window, bg_enabled = False):
 		"""
 		Constructeur par défaut d'une interface
 		Prend en paramètre la fenêtre
@@ -28,13 +28,13 @@ class GUI:
 		CURRENT_GUI = self
 
 		# Mise en place du fond d'écran si nécessaire
-		if bg:
+		if bg_enabled:
 			# Lecture de l'image avec le module PIL
-			bg = Image.open("images/menu/minia.png")
+			bg_enabled = Image.open("images/menu/minia.png")
 			# Redimensionnement à l'écran avec anti-crénelage
-			bg = bg.resize((window.winfo_screenwidth(), window.winfo_screenheight()), Image.ANTIALIAS)
+			bg_enabled = bg_enabled.resize((window.winfo_screenwidth(), window.winfo_screenheight()), Image.ANTIALIAS)
 			# Conversion en image Tkinter
-			bgImage = ImageTk.PhotoImage(bg)
+			bgImage = ImageTk.PhotoImage(bg_enabled)
 			# Mise en place de l'image dans un label et affichage de ce dernier
 			labelImage = tk.Label(window, image = bgImage)
 			labelImage.image = bgImage

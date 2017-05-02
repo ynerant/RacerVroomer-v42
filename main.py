@@ -9,7 +9,7 @@ if sys.version_info < (3, 0):
 	exit(1)
 
 # Inspection des dépendances
-# Pour chaque mdule requis, si ce dernier n'est pas trouvé, un message compréhensif est adressé à l'utilisateur, à la place d'une erreur
+# Pour chaque module requis, si ce dernier n'est pas trouvé, un message compréhensif est adressé à l'utilisateur, à la place d'une erreur
 # Les modules sont : Tkinter (pour le graphique), pygame.mixer (pour le son), PIL (pour le traitement d'images)
 try:
 	import tkinter as tk
@@ -41,7 +41,7 @@ if tk._default_root is None:
 	tk.Tk()
 
 from guis.mainMenu import MainMenu
-from guis import settings
+from guis import settings, scores
 import audio
 
 def main():
@@ -79,6 +79,9 @@ def main():
 
 	# Chargement des paramètres
 	settings.loadSettings()
+
+	# Chargement des scores
+	scores.loadScores()
 
 	# Affichage du menu principal
 	MainMenu(window)

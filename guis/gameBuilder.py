@@ -174,10 +174,6 @@ class MapChooser(GUI):
 		"""
 		GUI.__init__(self, window)
 
-		# Création d'un cadre interne
-		master = tk.Frame(window)
-		master.pack(fill = tk.BOTH)
-
 		self.builder = gameBuilder
 
 		for i in range(len(maps.MAPS)):
@@ -192,44 +188,43 @@ class MapChooser(GUI):
 			# Conversion de l'image en image Tkinter
 			thumbnail = tk.PhotoImage(file = "images/thumbnails/" + map.thumbnail)
 			# Placement de l'image dans un label et positionnement dans l'interface
-			thumbnailLabel = tk.Label(master, image = thumbnail)
+			thumbnailLabel = tk.Label(window, image = thumbnail)
 			thumbnailLabel.image = thumbnail
 			thumbnailLabel.grid(row = i, column = 0, rowspan = 1)
 			# Affichage du nom de la carte
-			label = tk.Label(master, textvariable = map.name, font = ("Plantagenet Cherokee", 30))
+			label = tk.Label(window, textvariable = map.name, font = ("Plantagenet Cherokee", 30))
 			label.grid(row = i, column = 1, rowspan = 1)
 			# Affichage de la taille (en pixels) de la carte
-			sizeLabel = tk.Label(master, textvariable = msgs.SIZE.format(map.width, map.height), font = ("Plantagenet Cherokee", 22))
+			sizeLabel = tk.Label(window, textvariable = msgs.SIZE.format(map.width, map.height), font = ("Plantagenet Cherokee", 22))
 			sizeLabel.grid(row = i, column = 2)
 			# Affichage du bouton de sélection de la carte
-			choose = tk.Button(master, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
+			choose = tk.Button(window, textvariable = msgs.CHOOSE, bg = utils.BUTTON_BACKGROUND, font = ("Plantagenet Cherokee", 22))
 			choose.grid(row = i, column = 3, rowspan = 1)
 
 			# Si une carte était déjà sélectionné, affichage d'un check à côté
 			if self.builder.map == map:
-				ok = tk.Label(master, text = "ü", font = ("Wingdings", 42))
+				ok = tk.Label(window, text = "ü", font = ("Wingdings", 42))
 				ok.grid(row = i, column = 4, rowspan = 1)
 				self.appendChild(ok)
 
 			# Inscription de l'écouteur pour le clic du bouton
-			self.registerChooseListener(master, choose, map)
+			self.registerChooseListener(window, choose, map)
 
 			# Ajout des enfants
-			self.appendChild(master)
 			self.appendChild(thumbnailLabel)
 			self.appendChild(label)
 			self.appendChild(sizeLabel)
 			self.appendChild(choose)
 
 		# Configuration des poids des colonnes
-		master.columnconfigure(0, weight = 1)
-		master.columnconfigure(1, weight = 2)
-		master.columnconfigure(2, weight = 3)
-		master.columnconfigure(3, weight = 2)
-		master.columnconfigure(4, weight = 1)
+		window.columnconfigure(0, weight = 1)
+		window.columnconfigure(1, weight = 2)
+		window.columnconfigure(2, weight = 3)
+		window.columnconfigure(3, weight = 2)
+		window.columnconfigure(4, weight = 1)
 
 		# Affichage du bouton retour
-		backBtn = tk.Button(master, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg = utils.BUTTON_BACKGROUND, anchor = "center",
+		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), bg = utils.BUTTON_BACKGROUND, anchor = "center",
 							width = 20, borderwidth = 10, relief = "groove", command = lambda : back(window))
 		backBtn.grid(row = len(cars.CARS) * 2 + 1, column = 0, columnspan = 5, pady = 100)
 		self.appendChild(backBtn)

@@ -5,7 +5,7 @@ import os
 # Import messages vars
 import messages as msgs
 import utils
-from . import GUI, settings, playerMode
+from . import GUI, settings, scores, playerMode
 
 
 class MainMenu(GUI):
@@ -28,16 +28,19 @@ class MainMenu(GUI):
 		onePlayerMode = tk.Button(window, textvariable = msgs.SINGLE_PLAYER, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda  : playerMode.SinglePlayer(window))
 		multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : playerMode.MultiPlayer(window))
 		options = tk.Button(window, textvariable = msgs.SETTINGS, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : settings.Settings(window))
+		scoresBtn = tk.Button(window, textvariable = msgs.SCORES, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : scores.Scores(window))
 		quitGame = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = on_closing)
 
 		# Placement des boutons dans le menu
 		onePlayerMode.place(relx = .025, rely = .30)
 		multiplayer.place(relx = .025, rely = .42)
 		options.place(relx = .025, rely = .54)
+		scoresBtn.place(relx = .025, rely = .66)
 		quitGame.place(relx = .74, rely = .88)
 
 		# Ajout des boutons comme enfants
 		self.appendChild(onePlayerMode)
 		self.appendChild(multiplayer)
 		self.appendChild(options)
+		self.appendChild(scoresBtn)
 		self.appendChild(quitGame)

@@ -73,7 +73,6 @@ def saveSettings():
 	with gzip.open("settings.gz", "wb") as f:
 		f.write(jsoned.encode("UTF-8"))
 
-
 # noinspection PyUnusedLocal
 class Settings(GUI):
 	def __init__(self, window):
