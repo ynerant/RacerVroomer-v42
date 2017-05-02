@@ -136,7 +136,8 @@ class Scores(GUI):
 
 		# Création du bouton retour
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "groove", command = lambda : back(window))
-		backBtn.place(relx = .74, rely = .88)
+		backBtn.place(relx = .74, rely = .88, relwidth = .26, relheight = .12)
+		self.appendChild(backBtn)
 
 		# Détermination du nombre de colonnes (1 colonne pour la carte, 1 colonne pour le temps, 1 colonne pour la voiture, autant de colonnes qui il y a de tours au maximum
 		columns = 3

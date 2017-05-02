@@ -91,14 +91,14 @@ class Settings(GUI):
 		sounds = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = switchSoundsMsg, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 22, borderwidth = 4, relief = "raise")
 		changeLanguage = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.CHANGE_LANGUAGE,  font = ("Plantagenet Cherokee", 30), anchor = "center", width = 22, borderwidth = 4, relief = "raise", command = msgs.switchLanguage)
 		controls = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.CHANGE_CONTROLS, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 22, borderwidth = 4, relief = "raise", command = lambda : Controls(window))
-		back = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, relief = "raise", command = lambda : guis.back(window))
+		back = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, relief = "groove", command = lambda : guis.back(window))
 
 		# Affichage des boutons
-		music.place(relx = .025, rely = .25)
-		sounds.place(relx = .025, rely = .37)
-		changeLanguage.place(relx = .025, rely = .49)
-		controls.place(relx = .025, rely = .61)
-		back.place(relx = .74, rely = .88)
+		music.place(relx = .025, rely = .25, relwidth = .42, relheight = .11)
+		sounds.place(relx = .025, rely = .37, relwidth = .42, relheight = .11)
+		changeLanguage.place(relx = .025, rely = .49, relwidth = .42, relheight = .11)
+		controls.place(relx = .025, rely = .61, relwidth = .42, relheight = .11)
+		back.place(relx = .74, rely = .88, relwidth = .26, relheight = .12)
 
 		def switchMusicState():
 			"""
@@ -143,32 +143,32 @@ class Controls(GUI):
 		super().__init__(window, True)
 
 		# Création des labels et des boutons
-		forwardLabel = tk.Label(window, textvariable = msgs.FORWARD, font = ("Plantagenet Cherokee", 21),width = 10)
+		forwardLabel = tk.Label(window, textvariable = msgs.FORWARD, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
 		forwardText = tk.StringVar(window, utils.CONTROLS["forward"].replace("_", " "))
 		forward = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = forwardText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
-		leftLabel = tk.Label(window, textvariable = msgs.TURN_LEFT, font = ("Plantagenet Cherokee", 21),width = 10)
+		leftLabel = tk.Label(window, textvariable = msgs.TURN_LEFT, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
 		leftText = tk.StringVar(window, utils.CONTROLS["left"].replace("_", " "))
 		left = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = leftText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
-		backwardLabel = tk.Label(window, textvariable = msgs.BACKWARD, font = ("Plantagenet Cherokee", 21),width = 10)
+		backwardLabel = tk.Label(window, textvariable = msgs.BACKWARD, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
 		backwardText = tk.StringVar(window, utils.CONTROLS["backward"].replace("_", " "))
 		backward = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = backwardText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
-		rightLabel = tk.Label(window, textvariable = msgs.TURN_RIGHT, font = ("Plantagenet Cherokee", 21),width = 10)
+		rightLabel = tk.Label(window, textvariable = msgs.TURN_RIGHT, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
 		rightText = tk.StringVar(window, utils.CONTROLS["right"].replace("_", " "))
 		right = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = rightText, font = ("Plantagenet Cherokee", 21), width = 10, relief ="raise")
 
 		# Création du bouton retour
-		back = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, relief ="raise", command = lambda : guis.back(window))
+		back = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, relief ="groove", command = lambda : guis.back(window))
 
 		# Affichage des boutons sur l'interface
-		forwardLabel.place(relx = .025, rely = .30, relwidth = .15)
-		forward.place(relx = .225, rely = .30, relwidth = .1)
-		leftLabel.place(relx = .025, rely = .38, relwidth = .15)
-		left.place(relx = .225, rely = .38, relwidth = .1)
-		backwardLabel.place(relx = .025, rely = .46, relwidth = .15)
-		backward.place(relx = .225, rely = .46, relwidth = .1)
-		rightLabel.place(relx = .025, rely = .54, relwidth = .15)
-		right.place(relx = .225, rely = .54, relwidth = .1)
-		back.place(relx = .74, rely = .88, relwidth = .245)
+		forwardLabel.place(relx = .025, rely = .30, relwidth = 0.275, relheight = .07)
+		forward.place(relx = .35, rely = .30, relwidth = .2, relheight = .07)
+		leftLabel.place(relx = .025, rely = .38, relwidth = .275, relheight = .07)
+		left.place(relx = .35, rely = .38, relwidth = .2, relheight = .07)
+		backwardLabel.place(relx = .025, rely = .46, relwidth = .275, relheight = .07)
+		backward.place(relx = .35, rely = .46, relwidth = .2, relheight = .07)
+		rightLabel.place(relx = .025, rely = .54, relwidth = .275, relheight = .07)
+		right.place(relx = .35, rely = .54, relwidth = .2, relheight = .07)
+		back.place(relx = .74, rely = .88, relwidth = .26, relheight = .12)
 
 		def requestNewKey(index, buttonText, label):
 			"""

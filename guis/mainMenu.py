@@ -29,14 +29,14 @@ class MainMenu(GUI):
 		multiplayer = tk.Button(window, textvariable = msgs.MULTI_PLAYER, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : playerMode.MultiPlayer(window))
 		options = tk.Button(window, textvariable = msgs.SETTINGS, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : settings.Settings(window))
 		scoresBtn = tk.Button(window, textvariable = msgs.SCORES, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : scores.Scores(window))
-		quitGame = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = on_closing)
+		quitGame = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "groove", command = on_closing)
 
 		# Placement des boutons dans le menu
-		onePlayerMode.place(relx = .025, rely = .30, relwidth = .245)
-		multiplayer.place(relx = .025, rely = .42, relwidth = .245)
-		options.place(relx = .025, rely = .54, relwidth = .245)
-		scoresBtn.place(relx = .025, rely = .66, relwidth = .245)
-		quitGame.place(relx = .74, rely = .88, relwidth = .245)
+		onePlayerMode.place(relx = .025, rely = .25, relwidth = .42, relheight = .11)
+		multiplayer.place(relx = .025, rely = .37, relwidth = .42, relheight = .11)
+		options.place(relx = .025, rely = .49, relwidth = .42, relheight = .11)
+		scoresBtn.place(relx = .025, rely = .61, relwidth = .42, relheight = .11)
+		quitGame.place(relx = .74, rely = .88, relwidth = .26, relheight = .12)
 
 		# Ajout des boutons comme enfants
 		self.appendChild(onePlayerMode)
