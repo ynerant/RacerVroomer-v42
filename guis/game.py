@@ -174,6 +174,16 @@ class Car:
 		# Ajout de la touche dans la liste keys_pressed
 		self.keys_pressed.add(event.keysym.upper())
 
+		# La combinaison CTRL+SHIFT+F6 (ou CTRL+SHIFT+F7) affiche les collisions (déstiné au debug lors de la création de cartes)
+		# NB : 6x7 = 42
+		print(self.keys_pressed)
+		if ("CONTROL_L" in self.keys_pressed or "CONTROL_R" in self.keys_pressed) and ("SHIFT_L" in self.keys_pressed or "SHIFT_R" in self.keys_pressed)\
+				and ("F6" in self.keys_pressed or "F7" in self.keys_pressed):
+			for wall in self.game.map.walls:
+				kx = self.game.width / self.game.map.width
+				ky = self.game.height / self.game.map.height
+				self.canvas.create_line(wall.x_start * kx, wall.y_start * ky, wall.x_end * kx, wall.y_end * ky)
+
 
 	def catch_key_release_event(self, event):
 		"""
