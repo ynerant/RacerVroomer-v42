@@ -13,7 +13,7 @@ BUTTON_BACKGROUND = "#f8a1a1"
 
 def showMessageDialog(title, text):
 	"""
-	Affichage d’une boîte de dialogue d’informations
+	Affichage d'une boîte de dialogue d'informations
 	title est le titre de la boîte et text le contenu
 	Chaque argument peut soit être une chaîne de caractères (str), soit un message localisé (messages.MSG)
 	"""

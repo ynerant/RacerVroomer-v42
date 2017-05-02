@@ -13,7 +13,7 @@ def loadScores():
 		# Décompression et lecture du fichier de scores compressé en gzip, écrit en JSON
 		with gzip.open("scores.gz", "rb") as f:
 			file_content = f.read()
-		# Décodage binaire (tableau d’octets vers chaîne de caractères)
+		# Décodage binaire (tableau d'octets vers chaîne de caractères)
 		jsoned = file_content.decode("UTF-8")
 		# Traduction JSON -> liste Python
 		l = json.loads(jsoned) #type: list
@@ -25,10 +25,10 @@ def loadScores():
 			total_time_seconds = obj["total_time_seconds"]
 			Score(car, map, time_laps, total_time, total_time_seconds, False)
 	except FileNotFoundError:
-		# Si le fichier n’a pas été trouvé, création d’un fichier vierge
+		# Si le fichier n'a pas été trouvé, création d'un fichier vierge
 		saveScores()
 	except IOError:
-		# Autre message d’erreur (fichier corrompu et irrécupérable) => Paramètres d’origine
+		# Autre message d'erreur (fichier corrompu et irrécupérable) => Paramètres d'origine
 		utils.showMessageDialog(msgs.MSG("Error occurred", "Une erreur est survenue"),
 								msgs.MSG("An error occurred while loading scores. The file may be corrupted, all your score are deleted.",
 										 "Une erreur est survenue lors de la lecture des scores. Le ficher est probablement corrompu, tous vos scores ont été supprimés."))
@@ -36,12 +36,12 @@ def loadScores():
 
 def saveScores():
 	"""
-	Sauvegarde au sein d’un fichier JSON compressé en GZIP (scores.gz) les scores actuels
+	Sauvegarde au sein d'un fichier JSON compressé en GZIP (scores.gz) les scores actuels
 	"""
 	# Création de scores sérialisés
 	l = list()
 	for score in utils.SCORES:
-		# Pour chaque score, création d’un dictionnaire comprenant les informations des scores en convertissant voitures et cartes par leurs identifiants numériques
+		# Pour chaque score, création d'un dictionnaire comprenant les informations des scores en convertissant voitures et cartes par leurs identifiants numériques
 		obj = dict(car = cars.CARS.index(score.car), map = maps.MAPS.index(score.map), laps_time = score.laps_time, total_time = score.total_time, total_time_seconds = score.total_time_seconds)
 		l.append(obj)
 	# Traduction en JSON
@@ -54,7 +54,7 @@ def saveScores():
 def getHighScore(map : maps.Map):
 	"""
 	Renvoie le plus gros score effectué sur une carte
-	Renvoie None si aucun score n’existe
+	Renvoie None si aucun score n'existe
 	"""
 	highScore = None
 	for score in utils.SCORES:
@@ -66,7 +66,7 @@ def getHighScore(map : maps.Map):
 class Score:
 	def __init__(self, car = None, map = None, laps_time = list(), total_time = None, total_time_seconds = -1, save = True):
 		"""
-		Constructeur par défaut d’un score, comprenant la voiture de course, la carte, les temps à chaque tour ainsi que le temps global (formatté et numérique)
+		Constructeur par défaut d'un score, comprenant la voiture de course, la carte, les temps à chaque tour ainsi que le temps global (formatté et numérique)
 		"""
 		self.car = car
 		self.map = map
@@ -80,9 +80,9 @@ class Score:
 
 	def __lt__(self, other):
 		"""
-		Comparaison : renvoie True si le temps total de ce score est inférieur à celui d’un autre
-		Permet d’effectuer des choses de la sorte my_score < my_other_score
-		Nécessité d’avoir la même carte
+		Comparaison : renvoie True si le temps total de ce score est inférieur à celui d'un autre
+		Permet d'effectuer des choses de la sorte my_score < my_other_score
+		Nécessité d'avoir la même carte
 		"""
 		if other is None:
 			return False
@@ -92,9 +92,9 @@ class Score:
 
 	def __le__(self, other):
 		"""
-		Comparaison : renvoie True si le temps total de ce score est inférieur ou égal à celui d’un autre
-		Permet d’effectuer des choses de la sorte my_score <= my_other_score
-		Nécessité d’avoir la même carte
+		Comparaison : renvoie True si le temps total de ce score est inférieur ou égal à celui d'un autre
+		Permet d'effectuer des choses de la sorte my_score <= my_other_score
+		Nécessité d'avoir la même carte
 		"""
 		if other is None:
 			return False
@@ -104,9 +104,9 @@ class Score:
 
 	def __gt__(self, other):
 		"""
-		Comparaison : renvoie True si le temps total de ce score est supérieur à celui d’un autre
-		Permet d’effectuer des choses de la sorte my_score > my_other_score
-		Nécessité d’avoir la même carte
+		Comparaison : renvoie True si le temps total de ce score est supérieur à celui d'un autre
+		Permet d'effectuer des choses de la sorte my_score > my_other_score
+		Nécessité d'avoir la même carte
 		"""
 		if other is None:
 			return False
@@ -116,9 +116,9 @@ class Score:
 
 	def __ge__(self, other):
 		"""
-		Comparaison : renvoie True si le temps total de ce score est supérieur à celui d’un autre
-		Permet d’effectuer des choses de la sorte my_score >= my_other_score
-		Nécessité d’avoir la même carte
+		Comparaison : renvoie True si le temps total de ce score est supérieur à celui d'un autre
+		Permet d'effectuer des choses de la sorte my_score >= my_other_score
+		Nécessité d'avoir la même carte
 		"""
 		if other is None:
 			return False

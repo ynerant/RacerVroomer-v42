@@ -9,15 +9,15 @@ CARS = []
 class Car :
 	def __init__(self, name : msgs.MSG, max_speed : float, acceleration : float, maniability : float, width : int, height : int, img_file : str, thumbnail_file : str):
 		"""
-		Constructeur par défaut d’une voiture
+		Constructeur par défaut d'une voiture
 		Le nom est localisé
 		La vitesse max est en px/s
-		L’accélération est en px/s²
-		L’angle d’orientation de la voiture est déterminé par la maniabilité; angle = 2pi / maniabilité
+		L'accélération est en px/s²
+		L'angle d'orientation de la voiture est déterminé par la maniabilité; angle = 2pi / maniabilité
 		Plus la maniabilité est élevée, moins la voiture va tourner vite
 		width (longueur) et height (hauteur) représentent la taille de la voiture en pixels
 		img_file (resp. thumbnail_file) est le chemin relatif à ./images/cars/ (resp. ./images/thumbnails/)
-				de l’image de la voiture (resp. de la miniature du sélecteur de voiture)
+				de l'image de la voiture (resp. de la miniature du sélecteur de voiture)
 		"""
 		self.name = name
 		self.max_speed = max_speed
