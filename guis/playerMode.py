@@ -26,10 +26,10 @@ class SinglePlayer(GUI):
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : back(window))
 
 		# Positionnement des boutons sur l'interface
-		car.place(relx = .025, rely = .30)
-		chooseMap.place(relx = .025, rely = .42)
-		start.place(relx = .025, rely = .54)
-		backBtn.place(relx = .74, rely = .88)
+		car.place(relx = .025, rely = .30, relwidth = .245)
+		chooseMap.place(relx = .025, rely = .42, relwidth = .245)
+		start.place(relx = .025, rely = .54, relwidth = .245)
+		backBtn.place(relx = .74, rely = .88, relwidth = .245)
 
 		# Ajout des boutons comme enfants
 		self.appendChild(car)
@@ -53,9 +53,9 @@ class MultiPlayer(GUI):
 		backBtn = tk.Button(window, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = lambda : back(window))
 
 		# Affichage et positionnement des boutons sur l'interface
-		local.place(relx = .025, rely = .35)
-		online.place(relx = .025, rely = .47)
-		backBtn.place(relx = .74, rely = .88)
+		local.place(relx = .025, rely = .35, relwidth = .245)
+		online.place(relx = .025, rely = .47, relwidth = .245)
+		backBtn.place(relx = .74, rely = .88, relwidth = .245)
 
 		# Ajout des boutons comme enfants
 		self.appendChild(local)

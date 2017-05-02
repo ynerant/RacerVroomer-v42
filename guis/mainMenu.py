@@ -32,11 +32,11 @@ class MainMenu(GUI):
 		quitGame = tk.Button(window, textvariable = msgs.QUIT, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, bg = utils.BUTTON_BACKGROUND, relief = "raise", command = on_closing)
 
 		# Placement des boutons dans le menu
-		onePlayerMode.place(relx = .025, rely = .30)
-		multiplayer.place(relx = .025, rely = .42)
-		options.place(relx = .025, rely = .54)
-		scoresBtn.place(relx = .025, rely = .66)
-		quitGame.place(relx = .74, rely = .88)
+		onePlayerMode.place(relx = .025, rely = .30, relwidth = .245)
+		multiplayer.place(relx = .025, rely = .42, relwidth = .245)
+		options.place(relx = .025, rely = .54, relwidth = .245)
+		scoresBtn.place(relx = .025, rely = .66, relwidth = .245)
+		quitGame.place(relx = .74, rely = .88, relwidth = .245)
 
 		# Ajout des boutons comme enfants
 		self.appendChild(onePlayerMode)

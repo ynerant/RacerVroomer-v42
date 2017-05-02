@@ -160,15 +160,15 @@ class Controls(GUI):
 		back = tk.Button(window, bg = utils.BUTTON_BACKGROUND, textvariable = msgs.BACK, font = ("Plantagenet Cherokee", 30), anchor = "center", width = 15, borderwidth = 4, relief ="raise", command = lambda : guis.back(window))
 
 		# Affichage des boutons sur l'interface
-		forwardLabel.place(relx = .025, rely = .30)
-		forward.place(relx = .225, rely = .30)
-		leftLabel.place(relx = .025, rely = .38)
-		left.place(relx = .225, rely = .38)
-		backwardLabel.place(relx = .025, rely = .46)
-		backward.place(relx = .225, rely = .46)
-		rightLabel.place(relx = .025, rely = .54)
-		right.place(relx = .225, rely = .54)
-		back.place(relx = .74, rely = .88)
+		forwardLabel.place(relx = .025, rely = .30, relwidth = .15)
+		forward.place(relx = .225, rely = .30, relwidth = .1)
+		leftLabel.place(relx = .025, rely = .38, relwidth = .15)
+		left.place(relx = .225, rely = .38, relwidth = .1)
+		backwardLabel.place(relx = .025, rely = .46, relwidth = .15)
+		backward.place(relx = .225, rely = .46, relwidth = .1)
+		rightLabel.place(relx = .025, rely = .54, relwidth = .15)
+		right.place(relx = .225, rely = .54, relwidth = .1)
+		back.place(relx = .74, rely = .88, relwidth = .245)
 
 		def requestNewKey(index, buttonText, label):
 			"""
