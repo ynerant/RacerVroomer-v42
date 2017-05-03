@@ -399,7 +399,8 @@ class CarThread(Thread):
 				AudioPlayer.playSound(AudioPlayer.COLLISION, bypass = True)
 				car.x = car.x - car.speed * car.vector[0] / 20.0
 				car.y = car.y - car.speed * car.vector[1] / 20.0
-				car.speed = -car.speed / 2
+				# Division de la vitesse par 4 et inversion du sens de la vitesse
+				car.speed = -car.speed / 4
 				# Attente d'1/60 seconde et avancement du chronomètre
 				time.sleep(1.0 / 60.0)
 				car.game.time += 1.0 / 60.0
