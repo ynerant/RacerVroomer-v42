@@ -47,7 +47,7 @@ import audio
 
 def main():
 	"""
-	Main method (invoked at launch)
+	Fonction principale (invoquée au lancement)
 	"""
 
 	# noinspection PyProtectedMember

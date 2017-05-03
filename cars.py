@@ -1,7 +1,6 @@
 #coding : utf-8
 
 import messages as msgs
-#import tkinter as tk
 
 # Liste de toutes les voitures disponibles
 CARS = []
