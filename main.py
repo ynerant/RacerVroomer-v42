@@ -54,8 +54,9 @@ def main():
 	window = tk._default_root #type: tk.Tk
 	# Affectation du titre
 	window.title("Racer Vroomer")
-	# Affectation de l'icône
-	window.iconbitmap("icon.ico")
+	# Affectation de l'icône sous Windows
+	if utils.isWindows():
+		window.iconbitmap("icon.ico")
 	# Maximisation de la fenêtre
 	if utils.isWindows():
 		window.state("zoomed")
