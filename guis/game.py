@@ -176,8 +176,9 @@ class Car:
 
 		# La combinaison CTRL+SHIFT+F6 (ou CTRL+SHIFT+F7) affiche les collisions (déstiné au debug lors de la création de cartes)
 		# NB : 6x7 = 42
-		if ("CONTROL_L" in self.keys_pressed or "CONTROL_R" in self.keys_pressed) and ("SHIFT_L" in self.keys_pressed or "SHIFT_R" in self.keys_pressed)\
-				and ("F6" in self.keys_pressed or "F7" in self.keys_pressed):
+		def isAnyKeyPressed(*keys):
+			return any(key in self.keys_pressed for key in keys)
+		if all([isAnyKeyPressed("CONTROL_L", "CONTROL_R"), isAnyKeyPressed("SHIFT_L", "SHIFT_R"), isAnyKeyPressed("F6", "F7")]):
 			for wall in self.game.map.walls:
 				kx = self.game.width / self.game.map.width
 				ky = self.game.height / self.game.map.height
@@ -427,12 +428,15 @@ class CarThread(Thread):
 			# Détection du passage de la voiture sur la ligne d'arrivée
 			# Le procédé est le même que pour la détection de collision
 			wall = car.game.map.start
-			dot_product = (wall.x_end - wall.x_start) * (newX - wall.x_start) + (wall.y_end - wall.y_start) * (newY - wall.y_start)
 			line = (wall.x_end - wall.x_start, wall.y_end - wall.y_start)
+			dot_product = line[0] * (newX - wall.x_start) + line[1] * (newY - wall.y_start)
 			line_length = math.sqrt(line[0] ** 2 + line[1] ** 2)
 			xH, yH = dot_product / (line_length ** 2) * line[0] + wall.x_start, dot_product / (line_length ** 2) * line[1] + wall.y_start
 
-			if xH < min(wall.x_start, wall.x_end) or xH > max(wall.x_start, wall.x_end) or yH < min(wall.y_start, wall.y_end) or yH > max(wall.y_start, wall.y_end):
+			if any([xH < min(wall.x_start, wall.x_end),
+						xH > max(wall.x_start, wall.x_end),
+						yH < min(wall.y_start, wall.y_end),
+						yH > max(wall.y_start, wall.y_end)]):
 				continue
 
 			# Si la voiture est passée sur la ligne d'arrivée
