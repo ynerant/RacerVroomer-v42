@@ -454,7 +454,7 @@ class CarThread(Thread):
 				self.last_passage_dir = direction
 
 				# Si la voiture a commencé un nouveau tour qu'elle n'avait encore jamais commencé, on calcule et on enregistre le temps passé pour le tour précédent
-				if car.game.lap > len(car.lap_times):
+				if car.game.lap > len(car.lap_times) and direction == 1:
 					total_last_time = 0
 					if car.game.lap >= 1:
 						for lap in range(car.game.lap - 1):
@@ -462,7 +462,7 @@ class CarThread(Thread):
 					car.lap_times.append(car.game.time - total_last_time)
 
 				# Si la voiture a effectué tous ses tours, la partie s'arrête et l'écran de fin s'affiche
-				if car.game.lap == car.game.map.max_laps:
+				if car.game.lap == car.game.map.max_laps and direction == 1:
 					self.stopped = True
 					self.end()
 					return
